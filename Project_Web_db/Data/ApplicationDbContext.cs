@@ -10,17 +10,14 @@ namespace Project_Web_db.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
+       
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-
-            
-        }
 
         public DbSet<User> Users { get; set; }
 
@@ -33,5 +30,19 @@ namespace Project_Web_db.Data
         public DbSet<Personnel_Add_User> Personnel_Add_Users { get; set; }
 
         public DbSet<Reservations> Reservations { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {   
+            builder.Entity<User>()
+                        .HasIndex(x => x.email).IsUnique();
+
+            builder.Entity<Personnel>()
+                       .HasIndex(x => x.email).IsUnique();
+
+            base.OnModelCreating(builder);
+
+        }
+
+       
     }
 }

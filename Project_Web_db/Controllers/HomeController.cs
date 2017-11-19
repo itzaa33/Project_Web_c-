@@ -9,6 +9,7 @@ using Project_Web_db.Data;
 using Microsoft.AspNetCore.Identity;
 using Project_Web_db.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
 
 namespace Project_Web_db.Controllers
 {
@@ -36,7 +37,41 @@ namespace Project_Web_db.Controllers
 
         public IActionResult Index()
         {
-            return View();
+
+            if(Request.Cookies["UserID"] != null)
+            {
+                string name = Request.Cookies["Username"];
+                string state = Request.Cookies["Userstate"];
+                string email = Request.Cookies["Useremail"];
+
+                var queryUser = _db.Users.Where(u => u.name == name && u.state == state && u.email == email).FirstOrDefault();
+
+                var queryPersonnel = _db.Personnels.Where(u => u.name == name && u.state == state).FirstOrDefault();
+
+                if(queryUser != null)
+                {
+                    HttpContext.Session.SetString("UserID", queryUser.id.ToString());
+                    HttpContext.Session.SetString("Username", queryUser.name.ToString());
+                    HttpContext.Session.SetString("Userstate", queryUser.state.ToString());
+                    HttpContext.Session.SetString("Usermoney", queryUser.money.ToString());
+                }
+                else if(queryPersonnel != null)
+                {
+                    HttpContext.Session.SetString("UserID", queryPersonnel.id.ToString());
+                    HttpContext.Session.SetString("Username", queryPersonnel.name.ToString());
+                    HttpContext.Session.SetString("Userstate", queryPersonnel.state.ToString());
+                    HttpContext.Session.SetString("Usermoney", queryPersonnel.money.ToString());
+                }
+                
+                
+                return View();
+            }
+            else
+            {
+                return View();
+            }
+
+            
         }
 
         public IActionResult About()
@@ -57,5 +92,7 @@ namespace Project_Web_db.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
     }
 }

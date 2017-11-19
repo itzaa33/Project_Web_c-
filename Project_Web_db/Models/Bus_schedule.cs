@@ -11,10 +11,13 @@ namespace Project_Web_db.Models
 
         public int id_personnel { get; set; }
 
-        public int sequence { get; set; }
+        public int station_set { get; set; }
+
+        public string time { get; set; }
 
         public int route { get; set; }
 
         public DateTime date { get; set; }
+
     }
 }

@@ -13,6 +13,8 @@ using Project_Web_db.Models;
 using Project_Web_db.Services;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace Project_Web_db
 {
@@ -32,6 +34,9 @@ namespace Project_Web_db
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
 
+            /*services.AddDbContext<ApplicationDbContext>(options =>
+           options.UseSqlServer(Configuration.GetConnectionString("MySQLConnection")));*/
+
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -44,27 +49,27 @@ namespace Project_Web_db
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
 
-  
-           /* services.Configure<IdentityOptions>(options =>
-            {
-                // Password settings
-                options.Password.RequireDigit = true;
-                options.Password.RequiredLength = 8;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = true;
-                options.Password.RequireLowercase = false;
-                options.Password.RequiredUniqueChars = 6;
 
-                // Lockout settings
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-                options.Lockout.MaxFailedAccessAttempts = 10;
-                options.Lockout.AllowedForNewUsers = true;
+            /* services.Configure<IdentityOptions>(options =>
+             {
+                 // Password settings
+                 options.Password.RequireDigit = true;
+                 options.Password.RequiredLength = 8;
+                 options.Password.RequireNonAlphanumeric = false;
+                 options.Password.RequireUppercase = true;
+                 options.Password.RequireLowercase = false;
+                 options.Password.RequiredUniqueChars = 6;
 
-                // User settings
-                options.User.RequireUniqueEmail = true;
-            });*/
+                 // Lockout settings
+                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+                 options.Lockout.MaxFailedAccessAttempts = 10;
+                 options.Lockout.AllowedForNewUsers = true;
 
-            services.ConfigureApplicationCookie(options =>
+                 // User settings
+                 options.User.RequireUniqueEmail = true;
+             });*/
+
+            /*services.ConfigureApplicationCookie(options =>
             {
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
@@ -73,13 +78,30 @@ namespace Project_Web_db
                 options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
                 options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
                 options.SlidingExpiration = true;
-            });
+            });*/
+
+            //--------------------------------------------------cookie-------------------------------
+            /*services.UseCookieAuthentication(new CookieAuthenticationOptions()
+            {
+                AuthenticationScheme = "CookieAuthentication",
+                LoginPath = new PathString("/Account/Login"),
+                AccessDeniedPath = new PathString("/Account/Forbidden/"),
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true
+            });*/
+ 
+
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
 
             services.AddMvc();
+
             services.AddDistributedMemoryCache();
+            //--------------------service sesion-------------------------
+            services
+            .AddMvc()
+            .AddSessionStateTempDataProvider();
             services.AddSession();
 
         }
@@ -109,10 +131,11 @@ namespace Project_Web_db
 
 
 
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}")
-                      .MapRoute("testCreare", "{controller=User}/{action=CreateUser}");
+                      .MapRoute("testCreare", "{controller=Home}/{action=Index}");
             });
         }
     }

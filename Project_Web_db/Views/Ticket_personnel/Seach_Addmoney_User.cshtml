@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@model List<Search_Addmoney_UserViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ผู้รับ</th>
+            <th>ดำเนินการโดย</th>
+            <th>เงินที่ได้รับ</th>
+            <th>วัน-เวลา</th>
+
+        </tr>
+    </thead>
+
+    @if (Model.Count > 0)
+    {
+        <tbody>
+            @foreach (var col in Model)
+            {
+
+
+                <tr>
+                    <td>@col.name_user</td>
+                    <td>@col.name_personnel</td>
+                    <td>@col.money</td>
+                    <td>@col.date</td>
+
+
+                </tr>
+
+
+            }
+        </tbody>
+
+    }
+    else
+    {
+        <p>ไม่มีข้อมูลในระบบ</p>
+
+    }
+
+
+
+</table>

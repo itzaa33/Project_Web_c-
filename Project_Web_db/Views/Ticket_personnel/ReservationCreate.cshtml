@@ -1,0 +1,462 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+
+@model Search_busscheduleViewModel
+
+<div class="container">
+    <div class="row">
+        <div align="center">
+            <form asp-controller="Ticket_personnel" asp-action="ReservationCreate" method="post">
+
+
+              
+
+
+                    <div>
+                        <input type="hidden" id="id_bus" name="id_bus" value="@Model.id" />
+                        <input type="hidden" id="user_money" name="user_money" value="@Context.Session.GetString("Usermoney")" />
+                        <input type="hidden" id="user_state" name="user_state" value="@Context.Session.GetString("Userstate")" />
+                        <label id="name">ชื่อ : @Context.Session.GetString("Username")</label>
+                    </div>
+
+                    <div>
+                        <label>
+                        <input type="hidden" id="station" name="station" value="@Model.station"/>
+                        
+                            @if (Model.station == 1)
+                            {
+                                <p>สถานที่ขึ้น: โพหัก</p>
+                            }
+                            else if(Model.station == 2)
+                            {
+                                <p>สถานที่ขึ้น: คริสเตียน</p>
+                            }
+                            else if(Model.station == 3)
+                            {
+                            <p>สถานที่ขึ้น: บ้านแพ้ว</p>
+                            }
+                            else if (Model.station == 4)
+                            {
+                                <p>สถานที่ขึ้น: โพนิมิต</p>
+                            }
+                            else if (Model.station == 5)
+                            {
+                                <p>สถานที่ขึ้น: สายใต้</p>
+                            }
+
+                         </label>
+                    </div>
+
+                    <div>
+                        <label >รถเบอร์ขึ้น : @Model.car_number</label>
+                        <input type="hidden" id="car_number" name="car_number" value="@Model.car_number" />
+                    </div>
+
+                    <div>
+                        <label id="time">เวลารถออก : @Model.time</label>
+                    </div>
+
+                    <div>
+                        <select id ="seat" name ="seat" class="selectpicker">
+                            @for (int i = 1; i <= 15; i++)
+                            {
+                                <option value="@i">@i</option>
+
+                            }
+
+                        </select>
+
+                    </div>
+                    <div>
+                        <select id="destination" name="destination" class="selectpicker">
+                            @if (Model.station == 1)
+                            {
+                                
+                                    <option value="คริสเตียน">คริสเตียน</option>
+                                    <option value="บ้านแพ้ว">บ้านแพ้ว</option>
+                             
+                                    <option value="มหาชัย">มหาชัย</option>
+                                    <option value="โพนิมิต">โพนิมิต</option>
+                                    <option value="สายใต้">สายใต้</option>
+                           
+
+                            }
+                            else if (Model.station == 2)
+                            {
+                              
+                                    <option value="บ้านแพ้ว">บ้านแพ้ว</option>
+                               
+                                    <option value="มหาชัย">มหาชัย</option>
+                                    <option value="โพนิมิต">โพนิมิต</option>
+                                    <option value="สายใต้">สายใต้</option>
+                               
+                            }
+                            else if (Model.station == 3)
+                            {
+                                
+                                    <option value="มหาชัย">มหาชัย</option>
+                                    <option value="โพนิมิต">โพนิมิต</option>
+                                    <option value="สายใต้">สายใต้</option>
+                              
+                            }
+                            else if (Model.station == 4)
+                            {
+                               
+                                    <option value="โพหัก">โพหัก</option>
+                                    <option value="คริสเตียน">คริสเตียน</option>
+                                    <option value="บ้านแพ้ว">บ้านแพ้ว</option>
+                              
+                                    <option value="มหาชัย">มหาชัย</option>
+                          
+                            }
+                            else if (Model.station == 5)
+                            {
+                               
+                                    <option value="โพหัก">โพหัก</option>
+                                    <option value="คริสเตียน">คริสเตียน</option>
+                                    <option value="บ้านแพ้ว">บ้านแพ้ว</option>
+                            
+                                    <option value="มหาชัย">มหาชัย</option>
+                               
+                            }
+
+                        </select>
+
+                    </div>
+                
+                <div>
+                    <label >ราคา : </label>
+                    <input type="hidden" id="price_return" name="price_return"/>
+                    <output type="text" id="price" name="price"></output>
+                </div>
+          
+                
+                <button type="submit"  id="submit" class="btn btn-primary">ตกลง</button>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        mufuntion();
+
+        $("select").change(function () {
+            mufuntion();
+        });
+
+
+    });
+
+    function mufuntion()
+    {
+       
+            var output = 0;
+            var money = $('#user_money').val();
+            var destination = $('#destination').val();
+            var seat = $('#seat').val();
+            var station = @Model.station;
+            var state = $('#user_state').val();
+
+
+
+            if (station == 1) {
+                if (destination == "บ้านแพ้ว" || destination == "คริสเตียน") {
+
+                    output += seat * 60;
+
+                    if (state != "Ticketing")
+                    {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                    
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+
+                 
+                        }
+
+                    }
+                    else
+                    {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                    
+
+                    }
+
+                   
+
+                }
+                else {
+
+                    output += seat * 80;
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                    
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+         
+
+                    }
+                }
+
+            }
+            else if (station == 2) {
+
+                if (destination == "บ้านแพ้ว") {
+                    output += seat * 60;
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+
+                    
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+
+                    }
+
+                }
+                else {
+
+                    output += seat * 80;
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+            
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+           
+
+                    }
+                }
+            }
+            else if (station == 4) {
+                if (destination == "มหาชัย") {
+
+                    output += seat * 60;
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                    }
+
+                }
+                else {
+
+                    output += seat * 80;
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                    }
+                }
+
+            }
+            else if (station == 5)
+            {
+                if (destination == "มหาชัย")
+                {
+                    output += seat * 60;
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                    }
+
+                }
+                else
+                {
+
+                    output += seat * 80;
+
+                    if (state != "Ticketing") {
+                        if (money >= output) {
+
+                            $('#submit').removeAttr('disabled');
+
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                        }
+                        else {
+
+                            $('#submit').attr('disabled', 'disabled');
+                            $('#price').val(output);
+                            $('#price_return').val(output);
+
+                            alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                        }
+
+                    }
+                    else {
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                    }
+                }
+
+            }
+            else
+            {
+                output += seat * 80;
+                if (state != "Ticketing") {
+                    if (money >= output) {
+
+                        $('#submit').removeAttr('disabled');
+
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                    }
+                    else {
+
+                        $('#submit').attr('disabled', 'disabled');
+                        $('#price').val(output);
+                        $('#price_return').val(output);
+
+                        alert("เงินในบัญชีของท่านไม่เพียงพอ สามารถเติมเงินได้ที่พนักงานขายตั๋ว");
+                    }
+
+                }
+                else {
+                    $('#price').val(output);
+                    $('#price_return').val(output);
+
+                }
+
+            }
+
+        }
+
+
+</script>

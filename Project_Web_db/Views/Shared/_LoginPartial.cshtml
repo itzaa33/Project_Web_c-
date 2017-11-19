@@ -3,23 +3,52 @@
 
 @using Microsoft.AspNetCore.Http
 
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
+
 
 
 
 @if (Context.Session.GetString("UserID") != null)
 {
-    <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+    <div id="logoutForm" class="btn btn-link navbar-btn navbar-right">
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a asp-area="" asp-controller="Manage" asp-action="Index" title="Manage">Hello @Context.Session.GetString("Username")!</a>
-            </li>
-            <li>
-                <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
-            </li>
+
+            <!--dropdown-->
+             <div class="dropdown">
+                 <span class="glyphicon glyphicon-copyright-mark"></span>
+                 @Context.Session.GetString("Usermoney") &nbsp;&nbsp;
+                 <a data-toggle="dropdown" style="text-decoration: none;">           
+                 <span class="glyphicon glyphicon-user"></span>
+                 @Context.Session.GetString("Username")
+                 <span class="caret"></span>
+                 </a>
+                 <ul class="dropdown-menu">
+
+                     <li><a href='@Url.Action("Search_Reservation_User", "User",new {id = @Context.Session.GetString("UserID") })'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Reservation</a></li>
+                     <li><a href='@Url.Action("Search_Addmoney_User", "User",new {id = @Context.Session.GetString("UserID") })'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Refill </a></li>
+
+                     @if (@Context.Session.GetString("Userstate") == "Ticketing")
+                     {
+                        <li><a href='@Url.Action("Search_userView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Search</a></li>
+
+
+                     }
+                     else if (@Context.Session.GetString("Userstate") == "Driver")
+                     {
+
+
+                     }
+                     else if (@Context.Session.GetString("Userstate") == "Admin")
+                     {
+
+
+                     }
+                     
+                     <li><a href='@Url.Action("Lockout", "Account")'><span class="glyphicon glyphicon-log-out"></span>&nbsp; Log out</a></li>
+                 </ul>
+             </div>
+ 
         </ul>
-    </form>
+    </div>
 }
 else
 {

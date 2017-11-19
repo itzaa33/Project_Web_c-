@@ -15,6 +15,8 @@ using Project_Web_db.Models.AccountViewModels;
 using Project_Web_db.Services;
 using Project_Web_db.Data;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+
 
 namespace Project_Web_db.Controllers
 {
@@ -62,20 +64,55 @@ namespace Project_Web_db.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(User model, string returnUrl = null)
         {
-            var query = _db.Users.Where(u => u.email == model.email && model.password == u.password).FirstOrDefault();
 
-            if (query != null)
-            {
-                HttpContext.Session.SetString("UserID", query.id.ToString());
-                HttpContext.Session.SetString("Username", query.name);
-                HttpContext.Session.SetString("Userstate", query.state);
-                return RedirectToAction("Register");
+            var queryUser = _db.Users.Where(u => u.email == model.email).FirstOrDefault();
+
+            var queryPersonnel = _db.Personnels.Where(u => u.email == model.email).FirstOrDefault();
+
+            CookieOptions option = new CookieOptions();
+
+            option.Expires = DateTime.Now.AddMonths(1);
+
+           
+
+            if (queryUser != null && BCrypt.Net.BCrypt.Verify(model.password, queryUser.password))
+                {
+                    HttpContext.Session.SetString("UserID", queryUser.id.ToString());
+                    HttpContext.Session.SetString("Username", queryUser.name.ToString());
+                    HttpContext.Session.SetString("Userstate", queryUser.state.ToString());
+                    HttpContext.Session.SetString("Usermoney", queryUser.money.ToString());
+
+
+                    HttpContext.Response.Cookies.Append("UserID", queryUser.id.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Useremail", queryUser.email.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Username", queryUser.name.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Userstate", queryUser.state.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Usermoney", queryUser.money.ToString());
+
+
+
+                    return Redirect("/Home/Index");
+                }
+                else if (queryPersonnel != null && BCrypt.Net.BCrypt.Verify(model.password, queryPersonnel.password))
+                {
+                    HttpContext.Session.SetString("UserID", queryPersonnel.id.ToString());
+                    HttpContext.Session.SetString("Username", queryPersonnel.name.ToString());
+                    HttpContext.Session.SetString("Userstate", queryPersonnel.state.ToString());
+                    HttpContext.Session.SetString("Usermoney", queryPersonnel.money.ToString());
+
+
+                    HttpContext.Response.Cookies.Append("UserID", queryPersonnel.id.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Useremail", queryPersonnel.email.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Username", queryPersonnel.name.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Userstate", queryPersonnel.state.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Usermoney", queryPersonnel.money.ToString());
+
+                return Redirect("/Home/Index");
             }
-            else
-            {
-                ModelState.AddModelError("", "User name or password is wrong.");
-                return View(model);
-            }
+              
+            
+
+            return View(model);
 
         }
 
@@ -117,7 +154,7 @@ namespace Project_Web_db.Controllers
 
 
 
-        [HttpGet]
+        /*[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> LoginWith2fa(bool rememberMe, string returnUrl = null)
         {
@@ -133,9 +170,9 @@ namespace Project_Web_db.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             return View(model);
-        }
+        }*/
 
-        [HttpPost]
+       /* [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginWith2fa(LoginWith2faViewModel model, bool rememberMe, string returnUrl = null)
@@ -171,9 +208,9 @@ namespace Project_Web_db.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid authenticator code.");
                 return View();
             }
-        }
+        }*/
 
-        [HttpGet]
+        /*[HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> LoginWithRecoveryCode(string returnUrl = null)
         {
@@ -187,9 +224,9 @@ namespace Project_Web_db.Controllers
             ViewData["ReturnUrl"] = returnUrl;
 
             return View();
-        }
+        }*/
 
-        [HttpPost]
+       /* [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LoginWithRecoveryCode(LoginWithRecoveryCodeViewModel model, string returnUrl = null)
@@ -225,13 +262,22 @@ namespace Project_Web_db.Controllers
                 ModelState.AddModelError(string.Empty, "Invalid recovery code entered.");
                 return View();
             }
-        }
+        }*/
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Lockout()
+        public async Task<IActionResult> Lockout()
         {
-            return View();
+            Response.Cookies.Delete("UserID");
+            Response.Cookies.Delete("Userstate");
+            Response.Cookies.Delete("Useremail");
+            Response.Cookies.Delete("Username");
+
+            HttpContext.Session.Clear();
+
+
+
+            return Redirect("Login");
         }
 
         [HttpGet]
@@ -277,23 +323,42 @@ namespace Project_Web_db.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(User model, string returnUrl = null)
         {
+           
             var request = HttpContext.Request;
+
+            CookieOptions option = new CookieOptions();
+
+            option.Expires = DateTime.Now.AddMonths(1);
             // ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
+                var query_user = _db.Users.Where(u => u.email == model.email).FirstOrDefault();
+                var query_personnel = _db.Users.Where(u => u.email == model.email).FirstOrDefault();
+
+                if (query_user != null || query_personnel != null)
+                {
+                    ModelState.AddModelError(string.Empty, "The email already exist.");
+
+                    return View("Register", model);
+                }
+
+
+
 
                 var user = new User
                 {
+                    
                     email = model.email,
                     name = model.name,
-                    password = model.password,
+                    //password = Crypto.HashPassword(model.password),
+                    password = BCrypt.Net.BCrypt.HashPassword(model.password),
                     provider = "Nomal",
                     phone_number = model.phone_number,
                     state = "User",
-                    abuse = 0,
                     status_ban = 0,
                     money = 0,
-                    date = DateTime.Now
+                    date = DateTime.Now,
+                    date_update = DateTime.Now
                 };
                 _db.Users.Add(user);
                 _db.SaveChanges();
@@ -301,52 +366,40 @@ namespace Project_Web_db.Controllers
                 ModelState.Clear();
                 //ViewBag.Message = user.name + " " + "is successfully registered.";
 
+                HttpContext.Session.SetString("UserID", user.id.ToString());
+                HttpContext.Session.SetString("Username", user.name);
+                HttpContext.Session.SetString("Userstate", user.state);
 
-                return RedirectToAction("Login");
+                var queryUser = _db.Users.Where(u => u.email == user.email && u.name == user.name).FirstOrDefault();
+
+                HttpContext.Response.Cookies.Append("UserID", queryUser.id.ToString(), option);
+                HttpContext.Response.Cookies.Append("Useremail", queryUser.email.ToString(), option);
+                HttpContext.Response.Cookies.Append("Username", queryUser.name.ToString(), option);
+                HttpContext.Response.Cookies.Append("Userstate", queryUser.state.ToString(), option);
+
+                // return RedirectToAction("Login");
+
+                return Redirect("/Home/Index");
             }
-            
 
-
+            return View("Register", model);
             // If we got this far, something failed, redisplay form
-            return View(model);
 
-            /*if (_db.Personnel_Add_Users.Any())
-            {
-                _db.Personnel_Add_Users.Add(new Personnel_Add_User
-                {
 
-                    id_user = 1,
-                    id_personnel = 1,
-                    money = 5,
-                    date = DateTime.Now,
-                });
-
-                _db.SaveChanges();
-
-            };*/
         }
 
-       
 
-/*[HttpPost]
-[ValidateAntiForgeryToken]
-public async Task<IActionResult> Logout()
-{
-    await _signInManager.SignOutAsync();
-    _logger.LogInformation("User logged out.");
-    return RedirectToAction(nameof(HomeController.Index), "Home");
-}*/
 
-[HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
-            HttpContext.Session.Clear();
-
+            await _signInManager.SignOutAsync();
+            _logger.LogInformation("User logged out.");
             return RedirectToAction(nameof(HomeController.Index), "Home");
-        }
+        }*/
 
-        [HttpPost]
+        /*[HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
@@ -391,9 +444,9 @@ public async Task<IActionResult> Logout()
                 var email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 return View("ExternalLogin", new ExternalLoginViewModel { Email = email });
             }
-        }
+        }*/
 
-        [HttpPost]
+       /* [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginViewModel model, string returnUrl = null)
@@ -423,7 +476,7 @@ public async Task<IActionResult> Logout()
 
             ViewData["ReturnUrl"] = returnUrl;
             return View(nameof(ExternalLogin), model);
-        }
+        }*/
 
         [HttpGet]
         [AllowAnonymous]

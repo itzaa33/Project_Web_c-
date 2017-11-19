@@ -11,11 +11,11 @@ namespace Project_Web_db.Models
 
         public int id_user_ticket { get; set; }
 
+        public int id_personnel_ticket { get; set; }
+
         public int id_bus_schedule { get; set; }
 
-        public String first_station { get; set; }
-
-        public String traget_station { get; set; }
+        public string traget_station { get; set; }
 
         public int seat { get; set; }
 

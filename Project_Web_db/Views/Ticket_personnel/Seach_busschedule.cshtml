@@ -1,0 +1,368 @@
+﻿@using System.Collections.Generic
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.Identity
+@using Project_Web_db.Models
+
+
+
+
+@model List<Search_busscheduleViewModel>
+
+<div class="container body-content">
+
+   <input type="hidden" id="popup" value="@ViewBag.alert" />
+
+
+    @if (ViewBag.route == 1)
+    {
+        
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 1})'>
+                         โพหัก
+                        </a>
+                    </li>
+                    <li>
+                        <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 2 })'>
+                        คริสเตียน
+                        </a>
+                     </li>
+                    <li>
+                        <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 3 })'>
+                        บ้านแพ้ว
+                        </a>
+                   </li>
+                </ul>
+            </div>
+        </nav>
+    }
+    else
+    {
+
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 2, station = 5})">
+                        สายใต้
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 2, station = 4})">
+                            โพนิมิตร
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    }
+
+    @if (Context.Session.GetString("UserID") != null && Context.Session.GetString("Userstate") != "Driver")
+    {
+      
+
+        @if (Model.Count() != 0)
+        {
+
+            <input type="hidden" id="state" value="@Context.Session.GetString("Userstate").ToString()" />
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>หมายเลขรถ</th>
+                        <th>เวลา</th>
+                        <th>เลือก</th>
+                    </tr>
+                 </thead>
+                
+                     <tbody>
+                        @{int index = 0;}
+                        @foreach (var col in Model)
+                        {
+                        
+                            <input type="hidden" id="id_@index"  value="@col.id" />
+                            <input type="hidden" id="time_@index" value="@col.time" />
+
+
+                            <tr>
+                                <td>@col.car_number</td>
+                                <td>@col.time</td>
+                                <td>
+                                    <button class="btn btn-info" id="data_@index"  value="" onclick="location.href='@Url.Action("ReservationCreateView", "Ticket_personnel", new { id = col.id })'"></button>
+                                   
+                                    @if (Context.Session.GetString("Userstate") == "User" )
+                                    {
+                                        <button style="display:none;" class="btn btn-danger" id="delete_@index" value="" onclick="ajaxdelete(@col.id,@index)">ยกเลิกการจอง</button>
+                                    }
+
+                                </td>
+
+                            </tr>
+
+                            index++;
+                        }
+                    </tbody>
+
+                
+            </table>
+        }
+        else
+        {
+            @if (Context.Session.GetString("Userstate") == "User")
+            {
+                <div class="container">
+                    ระบบยังไม่พร้อมใช้งาน
+                    กรุณารอเจ้าหน้าที่เปิดทำการ
+                    <br>
+                    <input type="button" class="btn btn-warning" value="สร้างตารางการเดินรถ" onclick="location.href='@Url.Action("Create_Bus_busscheduleView", "Ticket_personnel",new { route = ViewBag.route, station = ViewBag.station })'" />
+                </div>
+
+            }
+            else
+            {
+                <div class="container">
+                    ระบบยังไม่พร้อมใช้งาน
+                    กรุณารอเจ้าหน้าที่เปิดทำการ
+                </div>
+
+            }
+
+        }
+    }
+    else
+    {
+        @if (Model.Count() != 0)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>หมายเลขรถ</th>
+                        <th>เวลา</th>
+                        <th>เลือก</th>
+                    </tr>
+                 </thead>
+                
+                     <tbody>
+                        @{int index = 0;}
+                        @foreach (var col in Model)
+                        {
+                        
+                            <input type="hidden" id="id_@index"  value="@col.id" />
+                            <input type="hidden" id="time_@index" value="@col.time" />
+
+
+                            <tr>
+                                <td>@col.car_number</td>
+                                <td>@col.time</td>
+                                <td>
+                                    <p id="data_@index"  value=""></p>
+                                </td>
+                               
+                            </tr>
+
+                            index++;
+                        }
+                    </tbody>
+
+                
+            </table>
+
+        }
+        else
+        {
+            <div class="container">
+                ระบบยังไม่พร้อมใช้งาน
+                กรุณารอเจ้าหน้าที่เปิดทำการ
+            </div>
+
+        }
+
+    }
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+
+        var popup = $("#popup").val();
+
+        if (popup.length != 0) {
+            alert(popup);
+
+        }
+
+
+        forValue();
+
+
+
+
+    });
+
+
+    function forValue()
+    {
+        for (var i = 0; i < @Model.Count; i++) {
+
+
+            id_Bus = $("#id_" + i + "").val();
+
+            checktime(i);
+
+            ajaxque(id_Bus, i);
+
+
+
+
+
+        }
+
+    }
+
+    function checktime(index) {
+
+        var timeIstable = $("#time_" + index + "").val();
+
+        var timeNow = new Date();
+
+        var timevalue = new Date(timeNow.getFullYear(), timeNow.getMonth(), timeNow.getDate(), timeIstable.split('.')[0], timeIstable.split('.')[1]);
+
+        timevalue = timevalue.getTime();
+
+        timeNow = timeNow.getTime();
+
+
+
+
+        if (timevalue < timeNow) {
+            $("#data_" + index + "").attr("disabled", "disabled");
+
+
+        }
+    }
+
+    function ajaxdelete(id,index) {
+        $.ajax({
+            type: "get",
+            url: "/User/deleteReservation",
+            data: { id: id },
+            success: function (data) {
+
+                if (data.check == true)
+                {
+                    $("#data_" + index + "").removeAttr("disabled", "disabled");
+                    $("#data_" + index + "").removeClass('btn btn-warning').addClass('btn btn-info');
+                    $("#delete_" + index + "").attr("style", "display:none");
+
+
+                    alert(data.val_s);
+
+                    location.reload();
+                }
+                else
+                {
+                    alert(data.val_s);
+                     location.reload();
+                   
+                }
+
+             forValue();
+            }
+
+        });
+    }
+
+    function ajaxque(id_Bus, index) {
+                state = $("#state").val();
+
+                var timeIstable = $("#time_" + index + "").val();
+
+                var timeNow = new Date();
+
+                var timecancel = new Date(timeNow.getFullYear(), timeNow.getMonth(), timeNow.getDate(), timeIstable.split('.')[0], timeIstable.split('.')[1] - 30);
+
+
+                timecancel = timecancel.getTime();
+
+                timeNow = timeNow.getTime();
+
+
+
+                $.ajax({
+                    type: "get",
+                    url: "/Ticket_personnel/queryReservation",
+                    data: { id_Bus: id_Bus },
+                    success: function (data) {
+
+                        if (data.check == true)//เช็คการจองของไอดี
+                        {
+                            if (data.count == 15) {
+                                $("#data_" + index + "").attr("disabled", "disabled");
+                                $("#data_" + index + "").html("ที่นั่งเต็มเต็ม");
+                                $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
+
+                            }
+                            else {
+
+
+
+                                $("#data_" + index + "").attr("disabled", "disabled");
+                                $("#data_" + index + "").html("จองแล้ว");
+                                $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
+
+                                if (state == "User") {
+
+                                    if (timeNow < timecancel) {
+
+
+                                        $("#delete_" + index + "").attr("style", "display:inline");
+                           
+                                        location.reload();
+                                    }
+                                    else {
+                                        $("#delete_" + index + "").attr("style", "display:none");
+                            
+                                        location.reload();
+                                    }
+
+                                }
+
+
+                            }
+
+                        }
+                        else {
+                            if (data.count == 15) {
+
+                                $("#data_" + index + "").attr("disabled", "disabled");
+                                $("#data_" + index + "").html("ที่นั่งเต็มเต็ม");
+                                $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
+
+                            }
+                            else {
+
+                                $("#data_" + index + "").html(data.count + "/15");
+
+                            }
+
+
+                        }
+
+                    }
+                });
+
+            }
+
+</script>
+
+
+
+
+
