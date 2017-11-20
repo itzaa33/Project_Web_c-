@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using System.Data.SqlClient;
 
 namespace Project_Web_db
 {
@@ -31,8 +32,14 @@ namespace Project_Web_db
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //using (SqlConnection connection = new SqlConnection(Configuration.GetConnectionString("MySQLConnection")))
+            //{
+            //    connection.Open();
+            //    System.Diagnostics.Debug.WriteLine(connection.ToString());
+            //}
+
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("MySQLConnection")));
 
             /*services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("MySQLConnection")));*/
