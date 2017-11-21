@@ -16,6 +16,8 @@ namespace Project_Web_db.Models.ViewModel
 
         public int car_number { get; set; }
 
+        public string phone_number { get; set; }
+
         public string time { get; set; }
 
     }

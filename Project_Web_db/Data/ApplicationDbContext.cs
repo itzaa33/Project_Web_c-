@@ -20,7 +20,7 @@ namespace Project_Web_db.Data
 
 
         public DbSet<User> Users { get; set; }
-
+        
         public DbSet<Personnel> Personnels { get; set; }
 
         public DbSet<Ban> Bans { get; set; }

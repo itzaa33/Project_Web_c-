@@ -54,7 +54,14 @@ namespace Project_Web_db.Controllers
                                     where (bs.route == route && 
                                            bs.station_set == station && 
                                            bs.date.Date == timeNow.Date)
-                                    select new Search_busscheduleViewModel { id = bs.id ,time = bs.time, route = bs.route,station = bs.station_set,car_number = personnel.car_number}).ToList();
+                                    select new Search_busscheduleViewModel {
+                                        id = bs.id ,
+                                        time = bs.time,
+                                        route = bs.route,
+                                        station = bs.station_set,
+                                        car_number = personnel.car_number,
+                                        phone_number = personnel.phone_number
+                                    }).ToList();
 
 
                 ViewBag.route = route;
@@ -99,7 +106,14 @@ namespace Project_Web_db.Controllers
                                      where (bs.route == route &&
                                             bs.station_set == station &&
                                             bs.date.Date == timeNow.Date)
-                                     select new Search_busscheduleViewModel { id = bs.id, time = bs.time, route = bs.route, station = bs.station_set, car_number = personnel.car_number }).ToList();
+                                     select new Search_busscheduleViewModel {
+                                         id = bs.id,
+                                         time = bs.time,
+                                         route = bs.route,
+                                         station = bs.station_set,
+                                         car_number = personnel.car_number,
+                                         phone_number = personnel.phone_number
+                                     }).ToList();
 
 
                 ViewBag.route = route;

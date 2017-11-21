@@ -1,0 +1,376 @@
+﻿
+
+
+@model List<User>
+
+
+
+<div class="container">
+
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+            <form asp-controller="Personnel" asp-action="Search_user" method="post">
+
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav form-inline">
+
+                        <select class="form-control" name="Search_type" id="Search_type" required>
+                            <option value="email">E-Mail</option>
+                            <option value="name">Name</option>
+                        </select>
+
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" placeholder="Search" aria-label="Search">
+
+                        <button class="btn btn-primary" type="submit">Search</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </nav>
+    </div>
+
+</div>
+
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                E-mail
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                Money
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            @if (Model.Count() > 0)
+            {
+                
+
+                @foreach (var col in Model)
+                {
+                    <tr>
+
+                        <th>
+                            @col.email
+                        </th>
+
+                        <th>
+                            @col.name
+                        </th>
+
+                        <th>
+                            @col.phone_number
+                        </th>
+
+                        <th>
+                            @col.state
+
+                        </th>
+
+                        <th>
+                            @col.money
+                        </th>
+
+                        <th>
+
+                            @if (col.status_ban == 1)
+                            {
+                                <p>ติดโทษ</p>
+                            }
+                            else
+                            {
+                                <p>ปกติ</p>
+
+                            }
+
+                        </th>
+
+                        <th>
+                            @if (col.state != "Admin" && col.id != int.Parse(Context.Session.GetString("UserID")))
+                            {
+                                @if (col.status_ban == 0)
+                                {
+
+                                    @if (Context.Session.GetString("Userstate") == "Admin")
+                                    {
+
+                                        <button class="btn btn-primary" id="statemodel" name="statemodel" onclick="location.href='@Url.Action("Chang_state", "Personnel", new {id = col.id})'">เลือกระดับ</button>
+                                    }
+
+
+                                    @if (Context.Session.GetString("Userstate") != "Driver")
+                                    {
+
+                                        <button class="btn btn-warning" id="moneymodel" name="moneymodel" onclick="addmoney(@col.id)">เติมเงิน</button>
+                         
+                                    }
+
+
+
+                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax(@col.id)" >แบน</button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success" id="unbanmodel" name="unbanmodel" onclick="unban_ajax(@col.id)">ปลดแบน</button>
+
+                                }
+
+                            }
+               
+
+                        </th>
+                    </tr>
+                }
+
+
+
+            }
+            else
+            {
+
+                <p>ไม่พบข้อมูล</p>
+            }
+    
+    </tbody>
+</table>
+<!---------------------------------------ban----------------------->
+<div class="modal fade" id="ban" role="dialog">
+    <div class="modal-dialog">
+
+        <form asp-controller="Personnel" asp-action="Change_ban" method="post">
+
+            <input type="hidden" id="parse_value_ban" name="parse_value_ban" value="0" />
+            <input type="hidden" id="user_id" name="user_id"  />
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">บล็อกผู้ใช้งาน</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div>
+                        <label>Email</label>
+                        <p id="emailmodel" ></p>
+                    </div>
+
+                    <div>
+                        <label>Name </label>
+                        <p id="namemodel"></p>
+                    </div>
+
+                    <div>
+                        <label>Description</label> <br />
+                        <select class="form-control form-control-lg" name="explanation" id="explanation" form="carform">
+                            <option selected>ไม่มาขึ้นรถในเวลาที่กำหนด</option>
+                            <option>ก่อนกวนพนักงาน</option>
+                        </select>
+                    </div>
+
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" name="submit" id="submit" class="btn btn-default"      value="1">OK</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div class="modal fade" id="unban" role="dialog">
+    <div class="modal-dialog">
+
+        <form asp-controller="Personnel" asp-action="Change_ban" method="post">
+
+            <input type="hidden" id="parse_value_ban" name="parse_value_ban" value="1" />
+            <input type="hidden" id="unban_user_id" name="user_id" />
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">ปลดบล็อกผู้ใช้งาน</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div>
+                        <label>Email</label>
+                        <p id="unban_emailmodel"></p>
+                    </div>
+
+                    <div>
+                        <label>Name </label>
+                        <p id="unban_namemodel"></p>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="submit" id="submit" class="btn btn-default" value="0">OK</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<!---------------------------------------addmoney----------------------->
+
+<div class="modal fade" id="addmoney" role="dialog">
+    <div class="modal-dialog">
+
+        <form asp-controller="Personnel" asp-action="addmoney" method="post">
+
+            <input type="hidden" id="money_user_id" name="user_id" />
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">เติมเงินผู้ใช้งาน</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div>
+                        <label>Email</label>
+                        <p id="money_emailmodel"></p>
+                    </div>
+
+                    <div>
+                        <label>Name </label>
+                        <p id="money_namemodel"></p>
+                    </div>
+
+                    <div>
+                        <label>Money </label>
+                        <p id="money_moneyuser"></p>
+                    </div>
+
+                    <div>
+                        <label>Add Money</label>
+                        <input type="number" min="1" step="any" name="value_money"/>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" name="submit" id="submit" class="btn btn-default" >OK</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+
+<script>
+
+    function ban_ajax(id) {
+
+      
+
+        $.ajax({
+            type: "get",
+            url: "/Personnel/get_profile",
+            data: { id: id },
+            success: function (data) {
+
+                $('#emailmodel').text(data.email);
+
+                $('#namemodel').text(data.name);
+
+                $('#user_id').val(data.id);
+
+                $('#ban').modal();
+            }
+
+        });
+
+    }
+
+    function unban_ajax(id) {
+
+
+        $.ajax({
+            type: "get",
+            url: "/Personnel/get_profile",
+            data: { id: id },
+            success: function (data) {
+
+                $('#unban_emailmodel').text(data.email);
+
+                $('#unban_namemodel').text(data.name);
+
+                $('#unban_user_id').val(data.id);
+
+                $('#unban').modal();
+            }
+
+        });
+
+
+
+
+    }
+
+    function addmoney(id) {
+
+
+        $.ajax({
+            type: "get",
+            url: "/Personnel/get_profile",
+            data: { id: id },
+            success: function (data) {
+
+                $('#money_emailmodel').text(data.email);
+
+                $('#money_namemodel').text(data.name);
+
+                $('#money_user_id').val(data.id);
+
+                $('#money_moneyuser').text(data.money);
+
+
+                $('#addmoney').modal();
+            }
+
+        });
+
+
+
+
+    }
+
+
+
+
+</script>
+
+
+
+
+
+
+

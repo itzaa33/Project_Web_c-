@@ -74,6 +74,7 @@
                 <thead>
                     <tr>
                         <th>หมายเลขรถ</th>
+                        <th>เบอร์ติดต่อ</th>
                         <th>เวลา</th>
                         <th>เลือก</th>
                     </tr>
@@ -90,6 +91,7 @@
 
                             <tr>
                                 <td>@col.car_number</td>
+                                <td>@col.phone_number</td>
                                 <td>@col.time</td>
                                 <td>
                                     <button class="btn btn-info" id="data_@index"  value="" onclick="location.href='@Url.Action("ReservationCreateView", "Ticket_personnel", new { id = col.id })'"></button>

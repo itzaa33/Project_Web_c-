@@ -31,30 +31,33 @@ namespace Project_Web_db.Controllers
 
         public ActionResult Search_userView()
         {
-            return View("Search_Account");
+            var query = _db.Users.ToList();
+
+            return View("Search_Account", query);
         }
 
-        [HttpGet]
+        [HttpPost]
         public ActionResult Search_user()
         {
 
-            if(Request.Form["Search_type"] == "email")
+
+            if (Request.Form["Search_type"] == "email")
             {
-                var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]);
+                var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).ToList();
 
                 var query_Personnel = (from p in _db.Personnels
                                        where (p.email == Request.Form["Search"])
                                        select new User
                                        {
-                                           id           = p.id,
-                                           email        = p.email,
-                                           name         = p.name,
+                                           id = p.id,
+                                           email = p.email,
+                                           name = p.name,
                                            phone_number = p.phone_number,
-                                           state        = p.state,
-                                           money        = p.money,
-                                           status_ban   = p.status_ban
+                                           state = p.state,
+                                           money = p.money,
+                                           status_ban = p.status_ban
 
-                                       });
+                                       }).ToList();
 
                 if (query_User != null)
                 {
@@ -65,25 +68,25 @@ namespace Project_Web_db.Controllers
                     return View("Search_Account", query_Personnel);
                 }
 
-              
+
             }
-            else
+            else if (Request.Form["Search_type"] == "name")
             {
-                var query_User = _db.Users.Where(u => u.name == Request.Form["Search"]);
+                var query_User = _db.Users.Where(u => u.name == Request.Form["Search"]).ToList();
 
                 var query_Personnel = (from p in _db.Personnels
                                        where (p.name == Request.Form["Search"])
                                        select new User
                                        {
-                                           id           = p.id,
-                                           email        = p.email,
-                                           name         = p.name,
+                                           id = p.id,
+                                           email = p.email,
+                                           name = p.name,
                                            phone_number = p.phone_number,
-                                           state        = p.state,
-                                           money        = p.money,
-                                           status_ban   = p.status_ban
+                                           state = p.state,
+                                           money = p.money,
+                                           status_ban = p.status_ban
 
-                                       });
+                                       }).ToList();
 
                 if (query_User != null)
                 {
@@ -95,7 +98,44 @@ namespace Project_Web_db.Controllers
                 }
 
             }
-           
+            else
+            {
+                var query_Personnel = _db.Users.ToList();
+                return View("Search_Account", query_Personnel);
+                
+            }
+        }
+
+        [Route("{id}")]
+        public ActionResult Redirect_Search_user(int id)
+        {
+
+            
+                var query_User = _db.Users.Where(u => u.id == id).ToList();
+
+                var query_Personnel = (from p in _db.Personnels
+                                       where (p.id == id)
+                                       select new User
+                                       {
+                                           id = p.id,
+                                           email = p.email,
+                                           name = p.name,
+                                           phone_number = p.phone_number,
+                                           state = p.state,
+                                           money = p.money,
+                                           status_ban = p.status_ban
+
+                                       }).ToList();
+
+                if (query_User != null)
+                {
+                    return View("Search_Account", query_User);
+                }
+                else
+                {
+                    return View("Search_Account", query_Personnel);
+                }
+
         }
 
         [HttpGet]
@@ -118,17 +158,19 @@ namespace Project_Web_db.Controllers
 
 
         [HttpPost]
-        public ActionResult Chang_ban()
+        public ActionResult Change_ban()
         {
+            int id_user = int.Parse(Request.Form["user_id"]);
+            int status_user = int.Parse(Request.Form["parse_value_ban"]);
 
 
-            var query_User = _db.Users.Where(u => u.id == int.Parse(Request.Form["parse_value_ban"])).FirstOrDefault();
+            var query_User = _db.Users.Where(u => u.status_ban == status_user && u.id == id_user).FirstOrDefault();
 
-            var query_Personnel = _db.Personnels.Where(p => p.id == int.Parse(Request.Form["parse_value_ban"])).FirstOrDefault();
+            var query_Personnel = _db.Personnels.Where(p => p.status_ban == status_user && p.id == id_user).FirstOrDefault();
 
             if (query_User != null)
             {
-                if (Request.Form["submit"] == 1)
+                if (Request.Form["submit"] == "1")
                 {
                     query_User.status_ban = 1;
 
@@ -165,7 +207,7 @@ namespace Project_Web_db.Controllers
             }
             else
             {
-                if(Request.Form["submit"] == 1)
+                if(Request.Form["submit"] == "1")
                 {
                     query_Personnel.status_ban = 1;
 
@@ -204,7 +246,53 @@ namespace Project_Web_db.Controllers
             _db.SaveChanges();
 
 
-            return Redirect("/Personnel/Search_Account");
+            return Redirect($"/Personnel/Redirect_Search_user/{id_user}");
+        }
+
+        [HttpPost]
+        public ActionResult addmoney()
+        {
+            int id_user = int.Parse(Request.Form["user_id"]);
+
+            var query_User = _db.Users.Where(u => u.id == id_user).FirstOrDefault();
+
+            var query_Personnel = _db.Personnels.Where(p => p.id == id_user).FirstOrDefault();
+
+            if(query_User != null)
+            {
+                query_User.money = query_User.money + int.Parse(Request.Form["value_money"]);
+                _db.Users.Update(query_User);
+
+                var create_addmoney = new Personnel_Add_User
+                {
+                    id_user = id_user,
+                    id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                    money = int.Parse(Request.Form["value_money"]),
+                    date = DateTime.Now
+                };
+
+                _db.Personnel_Add_Users.Add(create_addmoney);
+            }
+            else
+            {
+                query_Personnel.money = query_Personnel.money + int.Parse(Request.Form["value_money"]);
+                _db.Personnels.Update(query_Personnel);
+
+                var create_addmoney = new Personnel_Add_User
+                {
+                    id_user = id_user,
+                    id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                    money = int.Parse(Request.Form["value_money"]),
+                    date = DateTime.Now
+                };
+
+                _db.Personnel_Add_Users.Add(create_addmoney);
+            }
+
+         
+            _db.SaveChanges();
+
+            return Redirect($"/Personnel/Redirect_Search_user/{id_user}");
         }
     }
 }

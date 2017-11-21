@@ -108,18 +108,20 @@ namespace Project_Web_db.Controllers
             {
                 int id_personnel = id;
 
-                var Reservation_Personnel = (from bs in _db.Bus_schedules
-                                             join reservation in _db.Reservations
-                                             on bs.id equals reservation.id_bus_schedule
-                                             where (reservation.id_personnel_ticket == id_personnel)
-                                             orderby reservation.date descending
-                                             select new Search_ReservationViewModel
+                var Reservation_Personnel = (from add in _db.Personnel_Add_Users
+                                             join p in _db.Personnels
+                                             on add.id_user equals p.id
+                                             join personnel in _db.Personnels
+                                             on add.id_personnel equals personnel.id
+                                             where (add.id_personnel == id_personnel)
+                                             orderby add.date descending
+                                             select new Search_Addmoney_UserViewModel
                                              {
-                                                 first_station = bs.station_set,
-                                                 last_station = reservation.traget_station,
-                                                 seat = reservation.seat,
-                                                 price = reservation.price,
-                                                 date = reservation.date
+                                                 id_add = add.id,
+                                                 name_user = p.name,
+                                                 name_personnel = personnel.name,
+                                                 money = add.money,
+                                                 date = add.date
                                              }).ToList();
 
                 return View("Search_Reservation_User", Reservation_Personnel);

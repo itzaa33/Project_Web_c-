@@ -39,7 +39,7 @@ namespace Project_Web_db
             //}
 
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("MySQLConnection")));
+                options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
 
             /*services.AddDbContext<ApplicationDbContext>(options =>
            options.UseSqlServer(Configuration.GetConnectionString("MySQLConnection")));*/
