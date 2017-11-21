@@ -102,7 +102,7 @@ namespace Project_Web_db.Controllers
                                             date = add.date
                                         }).ToList();
 
-                return View("Search_Reservation_User", Reservation_User);
+                return View("Search_Addmoney_User", Reservation_User);
             }
             else
             {
@@ -124,7 +124,7 @@ namespace Project_Web_db.Controllers
                                                  date = add.date
                                              }).ToList();
 
-                return View("Search_Reservation_User", Reservation_Personnel);
+                return View("Search_Addmoney_User", Reservation_Personnel);
             }
 
 

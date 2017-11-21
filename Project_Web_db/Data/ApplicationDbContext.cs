@@ -16,6 +16,8 @@ namespace Project_Web_db.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+
+    
         }
 
 

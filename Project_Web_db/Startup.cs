@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using System.Data.SqlClient;
+using Microsoft.Extensions.Logging;
 
 namespace Project_Web_db
 {
@@ -37,6 +38,9 @@ namespace Project_Web_db
             //    connection.Open();
             //    System.Diagnostics.Debug.WriteLine(connection.ToString());
             //}
+
+            
+           services.AddTransient<EntitiesContextInitializer>();
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
@@ -114,9 +118,11 @@ namespace Project_Web_db
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env ,ILoggerFactory loggerFactory,EntitiesContextInitializer personnel )
         {
-            
+            //seedder
+            personnel.Seed().Wait();
+
 
             if (env.IsDevelopment())
             {
@@ -136,6 +142,8 @@ namespace Project_Web_db
 
             app.UseSession();
 
+  
+
 
 
 
@@ -144,6 +152,7 @@ namespace Project_Web_db
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}")
                       .MapRoute("testCreare", "{controller=Home}/{action=Index}");
             });
+
         }
     }
 }

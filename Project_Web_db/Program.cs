@@ -18,14 +18,14 @@ namespace Project_Web_db
 
             BuildWebHost(args).Run();
 
-            /* var host = new WebHostBuilder()
+            var host = new WebHostBuilder()
                  .UseKestrel()
                  .UseContentRoot(Directory.GetCurrentDirectory())
                  .UseIISIntegration()
                  .UseStartup<Startup>()
                  .Build();
 
-             host.Run();*/
+             host.Run();
 
         }
 

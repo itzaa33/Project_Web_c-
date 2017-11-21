@@ -306,7 +306,14 @@ namespace Project_Web_db.Controllers
             }
             else
             {
+
                 int id = query_personnel.id;
+
+                Debug.WriteLine(id);
+                Debug.WriteLine(int.Parse(Request.Form["id_bus"]));
+                Debug.WriteLine(Request.Form["destination"]);
+                Debug.WriteLine(int.Parse(Request.Form["seat"]));
+                Debug.WriteLine(int.Parse(Request.Form["price_return"]));
 
                 var reservations = new Reservations
                 {
@@ -314,9 +321,8 @@ namespace Project_Web_db.Controllers
                     id_bus_schedule = int.Parse(Request.Form["id_bus"]),
                     traget_station = Request.Form["destination"],
                     seat = int.Parse(Request.Form["seat"]),
-                    price = int.Parse(Request.Form["pricere_turn"]),
+                    price = int.Parse(Request.Form["price_return"]),
                     date = DateTime.Now
-
 
                 };
 
