@@ -50,7 +50,7 @@ namespace Project_Web_db.Controllers
 
                 var querySchedule = (from bs in _db.Bus_schedules
                                     join personnel in _db.Personnels
-                                    on bs.id_personnel equals personnel.id
+                                    on bs.email_personnel equals personnel.email
                                     where (bs.route == route && 
                                            bs.station_set == station && 
                                            bs.date.Date == timeNow.Date)
@@ -102,7 +102,7 @@ namespace Project_Web_db.Controllers
 
                 var querySchedule = (from bs in _db.Bus_schedules
                                      join personnel in _db.Personnels
-                                     on bs.id_personnel equals personnel.id
+                                     on bs.email_personnel equals personnel.email
                                      where (bs.route == route &&
                                             bs.station_set == station &&
                                             bs.date.Date == timeNow.Date)
@@ -162,7 +162,7 @@ namespace Project_Web_db.Controllers
                         
                             var Bus_schedule = new Bus_schedule
                             {
-                                id_personnel = queryPersonnel.id,
+                                email_personnel = queryPersonnel.email,
                                 station_set = station,
                                 time = time,
                                 route = 1,
@@ -197,7 +197,7 @@ namespace Project_Web_db.Controllers
 
                         var Bus_schedule = new Bus_schedule
                         {
-                            id_personnel = queryPersonnel.id,
+                            email_personnel = queryPersonnel.email,
                             station_set = station,
                             time = time,
                             route = 2,
@@ -226,7 +226,7 @@ namespace Project_Web_db.Controllers
 
             var querySchedule = (from bs in _db.Bus_schedules
                                  join personnel in _db.Personnels
-                                 on bs.id_personnel equals personnel.id
+                                 on bs.email_personnel equals personnel.email
                                  where (bs.id == id)
                                  select new Search_busscheduleViewModel { id = bs.id, time = bs.time, route = bs.route, station = bs.station_set, car_number = personnel.car_number }).FirstOrDefault();
 
@@ -276,11 +276,11 @@ namespace Project_Web_db.Controllers
 
             if (query_user != null)
             {
-                int id = query_user.id;
+                string email = query_user.email;
 
                 var reservations = new Reservations
                 {
-                    id_user_ticket = id,
+                    email_user_ticket = email,
                     id_bus_schedule = int.Parse(Request.Form["id_bus"]),
 
                     traget_station  = Request.Form["destination"],
@@ -307,12 +307,12 @@ namespace Project_Web_db.Controllers
             else
             {
 
-                int id = query_personnel.id;
+                string email = query_personnel.email;
 
 
                 var reservations = new Reservations
                 {
-                    id_personnel_ticket = id,
+                    email_personnel_ticket = email,
                     id_bus_schedule = int.Parse(Request.Form["id_bus"]),
                     traget_station = Request.Form["destination"],
                     seat = int.Parse(Request.Form["seat"]),
@@ -365,7 +365,7 @@ namespace Project_Web_db.Controllers
 
                 if (user != null)
                 {
-                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.id_user_ticket == user.id);
+                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.email_user_ticket == user.email);
 
                     if(checkReservation != null)
                     {
@@ -376,7 +376,7 @@ namespace Project_Web_db.Controllers
                 }
                 else if(personnel != null)
                 {
-                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.id_personnel_ticket == personnel.id).FirstOrDefault();
+                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.email_personnel_ticket == personnel.email).FirstOrDefault();
 
                     if (checkReservation != null)
                     {

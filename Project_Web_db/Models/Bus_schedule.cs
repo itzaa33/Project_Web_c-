@@ -9,7 +9,7 @@ namespace Project_Web_db.Models
     {
         public int id { get; set; }
 
-        public int id_personnel { get; set; }
+        public string email_personnel { get; set; }
 
         public int station_set { get; set; }
 

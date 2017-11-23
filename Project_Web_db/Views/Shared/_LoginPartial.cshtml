@@ -23,8 +23,8 @@
                  </a>
                  <ul class="dropdown-menu">
 
-                     <li><a href='@Url.Action("Search_Reservation_User", "User",new {id = @Context.Session.GetString("UserID") })'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Reservation</a></li>
-                     <li><a href='@Url.Action("Search_Addmoney_User", "User",new {id = @Context.Session.GetString("UserID") })'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Refill </a></li>
+                     <li><a href='@Url.Action("Search_Reservation_User", "User")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Reservation</a></li>
+                     <li><a href='@Url.Action("Search_Addmoney_User", "User")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Refill </a></li>
 
                      @if (@Context.Session.GetString("Userstate") == "Ticketing")
                      {

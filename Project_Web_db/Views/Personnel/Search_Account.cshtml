@@ -192,8 +192,8 @@
                     <div>
                         <label>Description</label> <br />
                         <select class="form-control form-control-lg" name="explanation" id="explanation" form="carform">
-                            <option selected>ไม่มาขึ้นรถในเวลาที่กำหนด</option>
-                            <option>ก่อนกวนพนักงาน</option>
+                            <option value="ไม่มาขึ้นรถในเวลาที่กำหนด" selected>ไม่มาขึ้นรถในเวลาที่กำหนด</option>
+                            <option value="ก่อนกวนพนักงาน">ก่อนกวนพนักงาน</option>
                         </select>
                     </div>
 
@@ -249,7 +249,7 @@
 
         <form asp-controller="Personnel" asp-action="addmoney" method="post">
 
-            <input type="hidden" id="money_user_id" name="user_id" />
+            <input type="hidden" id="money_user_email" name="user_email" />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -353,7 +353,7 @@
 
                 $('#money_namemodel').text(data.name);
 
-                $('#money_user_id').val(data.id);
+                $('#money_user_email').val(data.email);
 
                 $('#money_moneyuser').text(data.money);
 

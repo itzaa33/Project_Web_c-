@@ -9,9 +9,9 @@ namespace Project_Web_db.Models
     {
         public int id { get; set; }
 
-        public int id_user { get; set; }
+        public string email_user { get; set; }
 
-        public int id_personnel { get; set; }
+        public string email_personnel { get; set; }
 
         public int money { get; set; }
 

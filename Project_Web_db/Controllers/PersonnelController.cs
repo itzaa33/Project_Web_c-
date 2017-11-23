@@ -178,8 +178,8 @@ namespace Project_Web_db.Controllers
 
                     var ban = new Ban
                     {
-                        id_user = query_User.id,
-                        id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                        email_user = query_User.email,
+                        email_personnel = HttpContext.Session.GetString("Useremail"),
                         command = 1,
                         explanation = Request.Form["explanation"],
                         date = DateTime.Now
@@ -196,8 +196,8 @@ namespace Project_Web_db.Controllers
 
                     var ban = new Ban
                     {
-                        id_user = query_User.id,
-                        id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                        email_user = query_User.email,
+                        email_personnel = HttpContext.Session.GetString("Useremail"),
                         command = 0,
                         date = DateTime.Now
                     };
@@ -215,8 +215,8 @@ namespace Project_Web_db.Controllers
 
                     var ban = new Ban
                     {
-                        id_user = query_Personnel.id,
-                        id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                        email_user = query_Personnel.email,
+                        email_personnel = HttpContext.Session.GetString("Useremail"),
                         command = 1,
                         explanation = Request.Form["explanation"],
                         date = DateTime.Now
@@ -232,8 +232,8 @@ namespace Project_Web_db.Controllers
 
                     var ban = new Ban
                     {
-                        id_user = query_Personnel.id,
-                        id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                        email_user = query_Personnel.email,
+                        email_personnel = HttpContext.Session.GetString("Useremail"),
                         command = 0,
                         date = DateTime.Now
                     };
@@ -252,11 +252,11 @@ namespace Project_Web_db.Controllers
         [HttpPost]
         public ActionResult addmoney()
         {
-            int id_user = int.Parse(Request.Form["user_id"]);
+            string email_user = Request.Form["user_email"];
 
-            var query_User = _db.Users.Where(u => u.id == id_user).FirstOrDefault();
+            var query_User = _db.Users.Where(u => u.email == email_user).FirstOrDefault();
 
-            var query_Personnel = _db.Personnels.Where(p => p.id == id_user).FirstOrDefault();
+            var query_Personnel = _db.Personnels.Where(p => p.email == email_user).FirstOrDefault();
 
             if(query_User != null)
             {
@@ -265,8 +265,8 @@ namespace Project_Web_db.Controllers
 
                 var create_addmoney = new Personnel_Add_User
                 {
-                    id_user = id_user,
-                    id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                    email_user = email_user,
+                    email_personnel = HttpContext.Session.GetString("Useremail"),
                     money = int.Parse(Request.Form["value_money"]),
                     date = DateTime.Now
                 };
@@ -280,8 +280,8 @@ namespace Project_Web_db.Controllers
 
                 var create_addmoney = new Personnel_Add_User
                 {
-                    id_user = id_user,
-                    id_personnel = int.Parse(HttpContext.Session.GetString("UserID")),
+                    email_user = email_user,
+                    email_personnel = HttpContext.Session.GetString("Useremail"),
                     money = int.Parse(Request.Form["value_money"]),
                     date = DateTime.Now
                 };
@@ -292,7 +292,7 @@ namespace Project_Web_db.Controllers
          
             _db.SaveChanges();
 
-            return Redirect($"/Personnel/Redirect_Search_user/{id_user}");
+            return Redirect($"/Personnel/Redirect_Search_user/{email_user}");
         }
 
         
@@ -300,10 +300,10 @@ namespace Project_Web_db.Controllers
         {
             var query_history = (from b in _db.Bans
                                  join u in _db.Users
-                                 on b.id_user equals u.id
+                                 on b.email_user equals u.email
                                  join p in _db.Personnels
-                                 on b.id_personnel equals p.id
-                                 where (b.id_user == null)
+                                 on b.email_personnel equals p.email
+                                 where (b.email_user == null)
                                  orderby b.date descending
                                  select new History_ban_ViewModel
                                  {
@@ -334,10 +334,10 @@ namespace Project_Web_db.Controllers
 
                     var query_history = (from b in _db.Bans
                                          join u in _db.Users
-                                         on b.id_user equals u.id
+                                         on b.email_user equals u.email
                                          join p in _db.Personnels
-                                         on b.id_personnel equals p.id
-                                         where (b.id_user == query_User.id)
+                                         on b.email_personnel equals p.email
+                                         where (b.email_user == query_User.email)
                                          orderby b.date descending
                                          select new History_ban_ViewModel
                                          {
@@ -362,10 +362,10 @@ namespace Project_Web_db.Controllers
 
                     var query_history = (from b in _db.Bans
                                          join u in _db.Users
-                                         on b.id_user equals u.id
+                                         on b.email_user equals u.email
                                          join p in _db.Personnels
-                                         on b.id_personnel equals p.id
-                                         where (b.id_user == query_User.id)
+                                         on b.email_personnel equals p.email
+                                         where (b.email_user == query_User.email)
                                          orderby b.date descending
                                          select new History_ban_ViewModel
                                          {
@@ -393,10 +393,10 @@ namespace Project_Web_db.Controllers
 
                     var query_history = (from b in _db.Bans
                                          join personnel_ban in _db.Personnels
-                                         on b.id_user equals personnel_ban.id
+                                         on b.email_user equals personnel_ban.email
                                          join p in _db.Personnels
-                                         on b.id_personnel equals p.id
-                                         where (b.id_personnel == query_User.id)
+                                         on b.email_personnel equals p.email
+                                         where (b.email_personnel == query_User.email)
                                          orderby b.date descending
                                          select new History_ban_ViewModel
                                          {
@@ -421,10 +421,10 @@ namespace Project_Web_db.Controllers
 
                     var query_history = (from b in _db.Bans
                                          join personnel_ban in _db.Personnels
-                                         on b.id_user equals personnel_ban.id
+                                         on b.email_user equals personnel_ban.email
                                          join p in _db.Personnels
-                                         on b.id_personnel equals p.id
-                                         where (b.id_user == query_User.id)
+                                         on b.email_personnel equals p.email
+                                         where (b.email_user == query_User.email)
                                          orderby b.date descending
                                          select new History_ban_ViewModel
                                          {
@@ -460,10 +460,10 @@ namespace Project_Web_db.Controllers
             var query = (from r in _db.Reservations
 
                          join p in _db.Personnels
-                         on r.id_personnel_ticket equals p.id into joined_personnel
+                         on r.email_personnel_ticket equals p.email into joined_personnel
 
                          join u in _db.Users
-                         on r.id_user_ticket equals u.id into joined_user
+                         on r.email_user_ticket equals u.email into joined_user
 
                          join bs in _db.Bus_schedules
                           on r.id_bus_schedule equals bs.id 

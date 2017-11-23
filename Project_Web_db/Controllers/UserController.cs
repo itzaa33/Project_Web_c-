@@ -22,21 +22,21 @@ namespace Project_Web_db.Controllers
             _db = db;
         }
 
-        [Route("{id}")]
-        public ActionResult Search_Reservation_User(int id)
+        
+        public ActionResult Search_Reservation_User()
         {
 
 
-            if (HttpContext.Session.GetString("Userstate") == "User")
+            if (Request.Cookies["Userstate"] == "User")
             {
-                int id_user = id;
+                string email_user = Request.Cookies["Useremail"];
 
                 var Reservation_User = (from bs in _db.Bus_schedules
                                         join reservation in _db.Reservations
                                         on bs.id equals reservation.id_bus_schedule
                                         join personnel in _db.Personnels
-                                        on bs.id_personnel equals personnel.id
-                                        where (reservation.id_user_ticket == id_user)
+                                        on bs.email_personnel equals personnel.email
+                                        where (reservation.email_user_ticket == email_user)
                                         orderby reservation.date descending
                                         select new Search_ReservationViewModel
                                         {
@@ -52,14 +52,14 @@ namespace Project_Web_db.Controllers
             }
             else
             {
-                int id_personnel = id;
+                string email_personnel = Request.Cookies["Useremail"];
 
                 var Reservation_User = (from bs in _db.Bus_schedules
                                         join reservation in _db.Reservations
                                         on bs.id equals reservation.id_bus_schedule
                                         join personnel in _db.Personnels
-                                        on bs.id_personnel equals personnel.id
-                                        where (reservation.id_user_ticket == id_personnel)
+                                        on bs.email_personnel equals personnel.email
+                                        where (reservation.email_user_ticket == email_personnel)
                                         orderby reservation.date descending
                                         select new Search_ReservationViewModel
                                         {
@@ -79,19 +79,19 @@ namespace Project_Web_db.Controllers
         }
 
 
-        [Route("{id}")]
-        public ActionResult Search_Addmoney_User(int id)
+      
+        public ActionResult Search_Addmoney_User()
         {
-            if (HttpContext.Session.GetString("Userstate") == "User")
+            if (Request.Cookies["Userstate"] == "User")
             {
-                int id_user = id;
+                string email_user = Request.Cookies["Useremail"];
 
                 var Reservation_User = (from add in _db.Personnel_Add_Users
                                         join u in _db.Users
-                                        on add.id_user equals u.id
+                                        on add.email_user equals u.email
                                         join personnel in _db.Personnels
-                                        on add.id_personnel equals personnel.id
-                                        where (add.id_user == id_user)
+                                        on add.email_personnel equals personnel.email
+                                        where (add.email_user == email_user)
                                         orderby add.date descending
                                         select new Search_Addmoney_UserViewModel
                                         {
@@ -106,14 +106,14 @@ namespace Project_Web_db.Controllers
             }
             else
             {
-                int id_personnel = id;
+                string email_personnel = Request.Cookies["Useremail"];
 
                 var Reservation_Personnel = (from add in _db.Personnel_Add_Users
                                              join p in _db.Personnels
-                                             on add.id_user equals p.id
+                                             on add.email_user equals p.email
                                              join personnel in _db.Personnels
-                                             on add.id_personnel equals personnel.id
-                                             where (add.id_personnel == id_personnel)
+                                             on add.email_personnel equals personnel.email
+                                             where (add.email_personnel == email_personnel)
                                              orderby add.date descending
                                              select new Search_Addmoney_UserViewModel
                                              {
@@ -156,9 +156,9 @@ namespace Project_Web_db.Controllers
             if (result > 0)
             {
 
-                var id_user = HttpContext.Session.GetString("UserID");
+                string email_user = Request.Cookies["Useremail"];
 
-                var user = _db.Users.Where(u => u.id == int.Parse(id_user)).FirstOrDefault();
+                var user = _db.Users.Where(u => u.email == email_user).FirstOrDefault();
 
                 user.money = user.money + query.price;
 
