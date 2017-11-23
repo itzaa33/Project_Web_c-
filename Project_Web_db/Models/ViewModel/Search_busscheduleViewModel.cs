@@ -10,6 +10,8 @@ namespace Project_Web_db.Models.ViewModel
     {
         public int id { get; set; }
 
+        public string email_driver { get; set; }
+
         public int route { get; set; }
 
         public int station { get; set; }
