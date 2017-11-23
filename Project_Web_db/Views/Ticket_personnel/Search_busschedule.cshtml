@@ -77,6 +77,14 @@
                         <th>เบอร์ติดต่อ</th>
                         <th>เวลา</th>
                         <th>เลือก</th>
+
+                        @if (Context.Session.GetString("Userstate") != "User")
+                        {
+                            <th>
+                                ดูผู้โดยสาร
+                            </th>
+                        }
+                      
                     </tr>
                  </thead>
                 
@@ -103,7 +111,15 @@
 
                                 </td>
 
+                                @if (Context.Session.GetString("Userstate") != "User")
+                                {
+                                    <td>
+                                        <button class="btn btn-success" onclick="location.href='@Url.Action("Check_userInschedule", "Personnel", new { id = col.id })'">รายละเอียดการจอง</button>
+                                    </td>
+                                }
+
                             </tr>
+                                
 
                             index++;
                         }
@@ -262,16 +278,17 @@
                     $("#data_" + index + "").removeAttr("disabled", "disabled");
                     $("#data_" + index + "").removeClass('btn btn-warning').addClass('btn btn-info');
                     $("#delete_" + index + "").attr("style", "display:none");
-
+                    location.reload();
 
                     alert(data.val_s);
 
-                    location.reload();
+   
                 }
                 else
                 {
+                    location.reload();
                     alert(data.val_s);
-                     location.reload();
+                
                    
                 }
 
@@ -326,12 +343,12 @@
 
                                         $("#delete_" + index + "").attr("style", "display:inline");
                            
-                                        location.reload();
+                                       
                                     }
                                     else {
                                         $("#delete_" + index + "").attr("style", "display:none");
                             
-                                        location.reload();
+                           
                                     }
 
                                 }

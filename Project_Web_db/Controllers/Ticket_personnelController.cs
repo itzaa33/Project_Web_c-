@@ -309,11 +309,6 @@ namespace Project_Web_db.Controllers
 
                 int id = query_personnel.id;
 
-                Debug.WriteLine(id);
-                Debug.WriteLine(int.Parse(Request.Form["id_bus"]));
-                Debug.WriteLine(Request.Form["destination"]);
-                Debug.WriteLine(int.Parse(Request.Form["seat"]));
-                Debug.WriteLine(int.Parse(Request.Form["price_return"]));
 
                 var reservations = new Reservations
                 {
@@ -360,14 +355,17 @@ namespace Project_Web_db.Controllers
 
             if (HttpContext.Session.GetString("UserID") != null && query != 0)
             {
-                int idUser = int.Parse(HttpContext.Session.GetString("UserID"));
+                string email_User = Request.Cookies["Useremail"];
+                
 
-                var user = _db.Users.Where(u => u.id == idUser).FirstOrDefault();
+                var user = _db.Users.Where(u => u.email == email_User).FirstOrDefault();
+                var personnel = _db.Personnels.Where(p => p.email == email_User).FirstOrDefault();
+
 
 
                 if (user != null)
                 {
-                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.id_user_ticket == idUser);
+                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.id_user_ticket == user.id);
 
                     if(checkReservation != null)
                     {
@@ -376,9 +374,9 @@ namespace Project_Web_db.Controllers
 
 
                 }
-                else 
+                else if(personnel != null)
                 {
-                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.id_personnel_ticket == idUser).FirstOrDefault();
+                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.id_personnel_ticket == personnel.id).FirstOrDefault();
 
                     if (checkReservation != null)
                     {

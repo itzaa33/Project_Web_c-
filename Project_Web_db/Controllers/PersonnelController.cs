@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project_Web_db.Data;
 using Project_Web_db.Models;
 using Microsoft.AspNetCore.Http;
+using Project_Web_db.Models.ViewModel;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -40,70 +41,69 @@ namespace Project_Web_db.Controllers
         public ActionResult Search_user()
         {
 
-
-            if (Request.Form["Search_type"] == "email")
+            if(Request.Form["Search_ptable"] == "user")
             {
-                var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).ToList();
 
-                var query_Personnel = (from p in _db.Personnels
-                                       where (p.email == Request.Form["Search"])
-                                       select new User
-                                       {
-                                           id = p.id,
-                                           email = p.email,
-                                           name = p.name,
-                                           phone_number = p.phone_number,
-                                           state = p.state,
-                                           money = p.money,
-                                           status_ban = p.status_ban
-
-                                       }).ToList();
-
-                if (query_User != null)
+                if (Request.Form["Search_type"] == "email")
                 {
-                    return View("Search_Account", query_User);
+                    var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).ToList();
+
+                        return View("Search_Account", query_User);
+
                 }
                 else
                 {
-                    return View("Search_Account", query_Personnel);
-                }
+                    var query_User = _db.Users.Where(u => u.name == Request.Form["Search"]).ToList();
 
+                    return View("Search_Account", query_User);
+                }
 
             }
-            else if (Request.Form["Search_type"] == "name")
+            else if(Request.Form["Search_table"] == "personnel")
             {
-                var query_User = _db.Users.Where(u => u.name == Request.Form["Search"]).ToList();
-
-                var query_Personnel = (from p in _db.Personnels
-                                       where (p.name == Request.Form["Search"])
-                                       select new User
-                                       {
-                                           id = p.id,
-                                           email = p.email,
-                                           name = p.name,
-                                           phone_number = p.phone_number,
-                                           state = p.state,
-                                           money = p.money,
-                                           status_ban = p.status_ban
-
-                                       }).ToList();
-
-                if (query_User != null)
+                if (Request.Form["Search_type"] == "email")
                 {
-                    return View("Search_Account", query_User);
+                    var query_Personnel = (from p in _db.Personnels
+                                           where (p.email == Request.Form["Search"])
+                                           select new User
+                                           {
+                                               id = p.id,
+                                               email = p.email,
+                                               name = p.name,
+                                               phone_number = p.phone_number,
+                                               state = p.state,
+                                               money = p.money,
+                                               status_ban = p.status_ban
+
+                                           }).ToList();
+                    return View("Search_Account", query_Personnel);
                 }
                 else
                 {
+                    var query_Personnel = (from p in _db.Personnels
+                                           where (p.name == Request.Form["Search"])
+                                           select new User
+                                           {
+                                               id = p.id,
+                                               email = p.email,
+                                               name = p.name,
+                                               phone_number = p.phone_number,
+                                               state = p.state,
+                                               money = p.money,
+                                               status_ban = p.status_ban
+
+                                           }).ToList();
                     return View("Search_Account", query_Personnel);
                 }
 
+                
             }
             else
             {
                 var query_Personnel = _db.Users.ToList();
                 return View("Search_Account", query_Personnel);
-                
             }
+
         }
 
         [Route("{id}")]
@@ -293,6 +293,207 @@ namespace Project_Web_db.Controllers
             _db.SaveChanges();
 
             return Redirect($"/Personnel/Redirect_Search_user/{id_user}");
+        }
+
+        
+        public ActionResult Search_History_banView()
+        {
+            var query_history = (from b in _db.Bans
+                                 join u in _db.Users
+                                 on b.id_user equals u.id
+                                 join p in _db.Personnels
+                                 on b.id_personnel equals p.id
+                                 where (b.id_user == null)
+                                 orderby b.date descending
+                                 select new History_ban_ViewModel
+                                 {
+                                     email_user = u.email,
+                                     name_user = u.name,
+                                     phone_number_user = u.phone_number,
+                                     state_user = u.state,
+                                     status_user = u.status_ban,
+                                     command = b.command,
+                                     name_personnel = p.name,
+                                     state_personnel = p.state,
+                                     explanation = b.explanation,
+                                     date = b.date
+                                 }).ToList();
+
+            return View("History_ban", query_history);
+        }
+
+        [HttpPost]
+        public ActionResult Search_History_ban()
+        {
+            if (Request.Form["Search_table"] == "user")
+            {
+
+                if (Request.Form["Search_type"] == "email")
+                {
+                    var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).FirstOrDefault();
+
+                    var query_history = (from b in _db.Bans
+                                         join u in _db.Users
+                                         on b.id_user equals u.id
+                                         join p in _db.Personnels
+                                         on b.id_personnel equals p.id
+                                         where (b.id_user == query_User.id)
+                                         orderby b.date descending
+                                         select new History_ban_ViewModel
+                                         {
+                                             email_user         = u.email,
+                                             name_user          = u.name,
+                                             phone_number_user  = u.phone_number,
+                                             state_user         = u.state,
+                                             status_user        = u.status_ban,
+                                             command            = b.command,
+                                             name_personnel     = p.name,
+                                             state_personnel    = p.state,
+                                             explanation        = b.explanation,
+                                             date               = b.date
+                                         }).ToList();
+
+                    return View("History_ban", query_history);
+
+                }
+                else
+                {
+                    var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).FirstOrDefault();
+
+                    var query_history = (from b in _db.Bans
+                                         join u in _db.Users
+                                         on b.id_user equals u.id
+                                         join p in _db.Personnels
+                                         on b.id_personnel equals p.id
+                                         where (b.id_user == query_User.id)
+                                         orderby b.date descending
+                                         select new History_ban_ViewModel
+                                         {
+                                             email_user = u.email,
+                                             name_user = u.name,
+                                             phone_number_user = u.phone_number,
+                                             state_user = u.state,
+                                             status_user = u.status_ban,
+                                             command = b.command,
+                                             name_personnel = p.name,
+                                             state_personnel = p.state,
+                                             explanation = b.explanation,
+                                             date = b.date
+                                         }).ToList();
+
+                    return View("History_ban", query_history);
+                }
+
+            }
+            else if (Request.Form["Search_table"] == "personnel")
+            {
+                if (Request.Form["Search_type"] == "email")
+                {
+                    var query_User = _db.Personnels.Where(p => p.name == Request.Form["Search"]).FirstOrDefault();
+
+                    var query_history = (from b in _db.Bans
+                                         join personnel_ban in _db.Personnels
+                                         on b.id_user equals personnel_ban.id
+                                         join p in _db.Personnels
+                                         on b.id_personnel equals p.id
+                                         where (b.id_personnel == query_User.id)
+                                         orderby b.date descending
+                                         select new History_ban_ViewModel
+                                         {
+                                             email_user         = personnel_ban.email,
+                                             name_user          = personnel_ban.name,
+                                             phone_number_user  = personnel_ban.phone_number,
+                                             state_user         = personnel_ban.state,
+                                             status_user        = personnel_ban.status_ban,
+                                             command            = b.command,
+                                             name_personnel     = p.name,
+                                             state_personnel    = p.state,
+                                             explanation        = b.explanation,
+                                             date               = b.date
+
+                                         }).ToList();
+
+                    return View("History_ban", query_history);
+                }
+                else
+                {
+                    var query_User = _db.Personnels.Where(u => u.name == Request.Form["Search"]).FirstOrDefault();
+
+                    var query_history = (from b in _db.Bans
+                                         join personnel_ban in _db.Personnels
+                                         on b.id_user equals personnel_ban.id
+                                         join p in _db.Personnels
+                                         on b.id_personnel equals p.id
+                                         where (b.id_user == query_User.id)
+                                         orderby b.date descending
+                                         select new History_ban_ViewModel
+                                         {
+                                             email_user = personnel_ban.email,
+                                             name_user = personnel_ban.name,
+                                             phone_number_user = personnel_ban.phone_number,
+                                             state_user = personnel_ban.state,
+                                             status_user = personnel_ban.status_ban,
+                                             command = b.command,
+                                             name_personnel = p.name,
+                                             state_personnel = p.state,
+                                             explanation = b.explanation,
+                                             date = b.date
+
+                                         }).ToList();
+
+                    return View("History_ban", query_history);
+                }
+
+
+            }
+            else
+            {
+                History_ban_ViewModel query_Personnel = null;
+                return View("History_ban", query_Personnel);
+            }
+
+        }
+
+        [Route("{id}")]
+        public ActionResult Check_userInschedule(int id)
+        {
+            var query = (from r in _db.Reservations
+
+                         join p in _db.Personnels
+                         on r.id_personnel_ticket equals p.id into joined_personnel
+
+                         join u in _db.Users
+                         on r.id_user_ticket equals u.id into joined_user
+
+                         join bs in _db.Bus_schedules
+                          on r.id_bus_schedule equals bs.id 
+
+                         where (r.id_bus_schedule == id) 
+                         orderby r.date descending 
+                         from ju in joined_user.DefaultIfEmpty()
+                         from jp in joined_personnel.DefaultIfEmpty()
+                         select new Search_UserIN_busschedule
+                          {
+                              
+                              email_personnel         = jp.email,
+                              name_personnel          = jp.name,
+                              phone_number_personnel  = jp.phone_number,
+
+                              email_user         = ju.email,
+                              name_user         = ju.name,
+                              phone_number_user = ju.phone_number,
+
+                              seat                    = r.seat,
+                              first_station           = bs.station_set,
+                              traget_station          = r.traget_station,
+                              date                    = r.date
+
+                          }).ToList();
+
+           
+         
+
+            return View("Personnel_Search_bs", query);
         }
     }
 }

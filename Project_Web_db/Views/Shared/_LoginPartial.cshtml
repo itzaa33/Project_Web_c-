@@ -29,18 +29,19 @@
                      @if (@Context.Session.GetString("Userstate") == "Ticketing")
                      {
                         <li><a href='@Url.Action("Search_userView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Search</a></li>
+                        <li><a href='@Url.Action("Search_History_banView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;History ban</a></li>
 
 
                      }
                      else if (@Context.Session.GetString("Userstate") == "Driver")
                      {
-
+                        <li><a href='@Url.Action("Search_History_banView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;History ban</a></li>
 
                      }
                      else if (@Context.Session.GetString("Userstate") == "Admin")
                      {
                         <li><a href='@Url.Action("Search_userView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Search</a></li>
-
+                        <li><a href='@Url.Action("Search_History_banView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;History ban</a></li>
                      }
                      
                      <li><a href='@Url.Action("Lockout", "Account")'><span class="glyphicon glyphicon-log-out"></span>&nbsp; Log out</a></li>

@@ -23,6 +23,7 @@ namespace Project_Web_db
                  .UseContentRoot(Directory.GetCurrentDirectory())
                  .UseIISIntegration()
                  .UseStartup<Startup>()
+                 .CaptureStartupErrors(true)
                  .Build();
 
              host.Run();

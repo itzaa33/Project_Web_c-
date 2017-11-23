@@ -9,9 +9,9 @@ namespace Project_Web_db.Models
     {
         public int id { get; set; }
 
-        public int id_user_ticket { get; set; }
+        public int? id_user_ticket { get; set; }
 
-        public int id_personnel_ticket { get; set; }
+        public int? id_personnel_ticket { get; set; }
 
         public int id_bus_schedule { get; set; }
 

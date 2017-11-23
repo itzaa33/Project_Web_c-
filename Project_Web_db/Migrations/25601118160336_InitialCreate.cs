@@ -129,8 +129,8 @@ namespace Project_Web_db.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     date = table.Column<DateTime>(nullable: false),
                     id_bus_schedule = table.Column<int>(nullable: false),
-                    id_personnel_ticket = table.Column<int>(nullable: false),
-                    id_user_ticket = table.Column<int>(nullable: false),
+                    id_personnel_ticket = table.Column<int>(nullable: true),
+                    id_user_ticket = table.Column<int>(nullable: true),
                     price = table.Column<int>(nullable: false),
                     seat = table.Column<int>(nullable: false),
                     traget_station = table.Column<string>(nullable: true)

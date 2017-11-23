@@ -78,16 +78,17 @@ namespace Project_Web_db.Controllers
             if (queryUser != null && BCrypt.Net.BCrypt.Verify(model.password, queryUser.password))
                 {
                     HttpContext.Session.SetString("UserID", queryUser.id.ToString());
+                    HttpContext.Session.SetString("Useremail", queryUser.email);
                     HttpContext.Session.SetString("Username", queryUser.name.ToString());
                     HttpContext.Session.SetString("Userstate", queryUser.state.ToString());
                     HttpContext.Session.SetString("Usermoney", queryUser.money.ToString());
 
 
                     HttpContext.Response.Cookies.Append("UserID", queryUser.id.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Useremail", queryUser.email.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Username", queryUser.name.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Userstate", queryUser.state.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Usermoney", queryUser.money.ToString());
+                    HttpContext.Response.Cookies.Append("Useremail", queryUser.email, option);
+                    HttpContext.Response.Cookies.Append("Username", queryUser.name, option);
+                    HttpContext.Response.Cookies.Append("Userstate", queryUser.state, option);
+                    HttpContext.Response.Cookies.Append("Usermoney", queryUser.money.ToString(), option);
 
 
 
@@ -96,15 +97,16 @@ namespace Project_Web_db.Controllers
                 else if (queryPersonnel != null && BCrypt.Net.BCrypt.Verify(model.password, queryPersonnel.password))
                 {
                     HttpContext.Session.SetString("UserID", queryPersonnel.id.ToString());
-                    HttpContext.Session.SetString("Username", queryPersonnel.name.ToString());
-                    HttpContext.Session.SetString("Userstate", queryPersonnel.state.ToString());
+                    HttpContext.Session.SetString("Useremail", queryPersonnel.email);
+                    HttpContext.Session.SetString("Username", queryPersonnel.name);
+                    HttpContext.Session.SetString("Userstate", queryPersonnel.state);
                     HttpContext.Session.SetString("Usermoney", queryPersonnel.money.ToString());
 
 
                     HttpContext.Response.Cookies.Append("UserID", queryPersonnel.id.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Useremail", queryPersonnel.email.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Username", queryPersonnel.name.ToString(), option);
-                    HttpContext.Response.Cookies.Append("Userstate", queryPersonnel.state.ToString(), option);
+                    HttpContext.Response.Cookies.Append("Useremail", queryPersonnel.email, option);
+                    HttpContext.Response.Cookies.Append("Username", queryPersonnel.name, option);
+                    HttpContext.Response.Cookies.Append("Userstate", queryPersonnel.state, option);
                     HttpContext.Response.Cookies.Append("Usermoney", queryPersonnel.money.ToString());
 
                 return Redirect("/Home/Index");
@@ -366,9 +368,12 @@ namespace Project_Web_db.Controllers
                 ModelState.Clear();
                 //ViewBag.Message = user.name + " " + "is successfully registered.";
 
+
                 HttpContext.Session.SetString("UserID", user.id.ToString());
+                HttpContext.Session.SetString("Useremail", user.email);
                 HttpContext.Session.SetString("Username", user.name);
                 HttpContext.Session.SetString("Userstate", user.state);
+                HttpContext.Session.SetString("Usermoney", user.money.ToString());
 
                 var queryUser = _db.Users.Where(u => u.email == user.email && u.name == user.name).FirstOrDefault();
 

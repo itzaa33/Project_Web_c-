@@ -54,11 +54,11 @@ namespace Project_Web_db
 
 
 
-            services.AddAuthentication().AddGoogle(googleOptions =>
+           /* services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-            });
+            });*/
 
 
             /* services.Configure<IdentityOptions>(options =>
@@ -117,7 +117,7 @@ namespace Project_Web_db
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.                        //seeder
         public void Configure(IApplicationBuilder app, IHostingEnvironment env ,ILoggerFactory loggerFactory,EntitiesContextInitializer personnel )
         {
             //seedder

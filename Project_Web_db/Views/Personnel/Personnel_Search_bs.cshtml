@@ -1,0 +1,142 @@
+﻿
+
+@model List<Search_UserIN_busschedule>
+
+
+
+<table class="table">
+
+    <thead>
+        <tr>
+            <th>
+                Passenger
+            </th>
+            <th>
+                E-Mail
+            </th>
+            <th>
+                Phone Member
+            </th>
+            <th>
+                Seat
+            </th>
+            <th>
+                First Station
+            </th>
+            <th>
+                Last Station
+            </th>
+            <th>
+                Date
+            </th>
+        </tr>
+    </thead>
+
+    @if (Model.Count > 0 )
+    {
+        @foreach (var col in Model)
+        {
+            <tbody>
+                <tr>
+                    @if(col.name_user != null)
+                    {
+
+                        <td>
+                            @col.name_user
+                        </td>
+                        <td>
+                            @col.email_user
+                        </td>
+                        <td>
+                            @col.phone_number_user
+                        </td>
+                        <td>
+                            @col.seat
+                        </td>
+                        <td>
+                            @if(col.first_station == 1)
+                            {
+                                <p>โพหัก</p>
+                            }
+                            else if (col.first_station == 2)
+                            {
+                                <p>คริสเตียน</p>
+                            }
+                            else if (col.first_station == 3)
+                            {
+                                <p>บ้านแพ้ว</p>
+                            }
+                            else if (col.first_station == 4)
+                            {
+                                <p>โพนิมิต</p>
+                            }
+                            else if (col.first_station == 5)
+                            {
+                                <p>สายใต้</p>
+                            }
+                        </td>
+                        <td>
+                            @col.traget_station
+                        </td>
+                        <td>
+                            @col.date
+                        </td>
+
+
+                    }
+                    else if(col.name_personnel != null)
+                    {
+
+                        <td>
+                            @col.name_personnel
+                        </td>
+                        <td>
+                            @col.email_personnel
+                        </td>
+                        <td>
+                            @col.phone_number_personnel
+                        </td>
+                        <td>
+                            @col.seat
+                        </td>
+                        <td>
+                            @if (col.first_station == 1)
+                            {
+                                <p>โพหัก</p>
+                            }
+                            else if (col.first_station == 2)
+                            {
+                                <p>คริสเตียน</p>
+                            }
+                            else if (col.first_station == 3)
+                            {
+                                <p>บ้านแพ้ว</p>
+                            }
+                            else if (col.first_station == 4)
+                            {
+                                <p>โพนิมิต</p>
+                            }
+                            else if (col.first_station == 5)
+                            {
+                                <p>สายใต้</p>
+                            }
+                        </td>
+                        <td>
+                            @col.traget_station
+                        </td>
+                        <td>
+                            @col.date
+                        </td>
+                    }
+                </tr>
+            </tbody>
+           
+        }
+    }
+    else
+    {
+        <p>ไม่มีข้อมูล</p>
+    }
+</table>
+
+

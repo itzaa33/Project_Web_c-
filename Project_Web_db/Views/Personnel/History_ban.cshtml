@@ -1,0 +1,172 @@
+﻿
+
+
+@model List<History_ban_ViewModel>
+
+
+
+<div class="container">
+
+    <div class="row">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+            <form asp-controller="Personnel" asp-action="Search_History_ban" method="post">
+
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav form-inline">
+
+                        <select class="form-control" name="Search_table" id="Search_table" required>
+                            <option value="user">User</option>
+                            <option value="personnel">Personnel</option>
+                        </select>
+
+                        <select class="form-control" name="Search_type" id="Search_type" required>
+                            <option value="email">E-Mail</option>
+                            <option value="name">Name</option>
+                        </select>
+
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="Search" name="Search" placeholder="Search" aria-label="Search">
+
+                        <button class="btn btn-primary" type="submit">Search</button>
+
+                    </div>
+                </div>
+
+            </form>
+        </nav>
+    </div>
+
+</div>
+
+
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                E-mail 
+            </th>
+            <th>
+                Name 
+            </th>
+            <th>
+                Phone Number 
+            </th>
+            <th>
+                State
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Command
+            </th>
+            <th>
+                Name (Personnel)
+            </th>
+            <th>
+                State (Personnel)
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                DateTime
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @if (Model.Count() > 0)
+        {
+
+
+            @foreach (var col in Model)
+             {
+                <tr>
+
+                    <th>
+                        @col.email_user
+                    </th>
+
+                    <th>
+                        @col.name_user
+                    </th>
+
+                    <th>
+                        @col.phone_number_user
+                    </th>
+
+                    <th>
+                        @col.state_user
+
+                    </th>
+
+                    <th>
+                        @if(col.status_user == 0)
+                        {
+                            <p>ปกติ</p>
+
+                        }
+                        else
+                        {
+
+                            <p>โดนบล็อค</p>
+
+                        }
+                    </th>
+
+                    <th>
+                        @if (col.command == 0)
+                        { 
+                            <p>ปลดบล็อค</p>
+                        }
+                        else
+                        {
+
+                            <p>บล็อค</p>
+                        }
+                    </th>
+
+                    <th>
+                        @col.name_personnel
+                    </th>
+
+                    <th>
+                        @col.state_personnel
+                    </th>
+
+                    <th>
+                        @col.explanation
+                    </th>
+                    <th>
+                        @col.date
+                    </th>
+
+                    
+                </tr>
+             }
+        }
+        else
+        {
+            <p>ไม่มีข้อมูล</p>
+
+        }
+
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+

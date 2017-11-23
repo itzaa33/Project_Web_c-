@@ -16,6 +16,11 @@
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav form-inline">
 
+                        <select class="form-control" name="Search_table" id="Search_table" required>
+                            <option value="user">User</option>
+                            <option value="personnel">Personnel</option>
+                        </select>
+
                         <select class="form-control" name="Search_type" id="Search_type" required>
                             <option value="email">E-Mail</option>
                             <option value="name">Name</option>
@@ -110,7 +115,7 @@
                         </th>
 
                         <th>
-                            @if (col.state != "Admin" && col.id != int.Parse(Context.Session.GetString("UserID")))
+                            @if (col.state != "Admin" && col.email != Context.Session.GetString("Useremail"))
                             {
                                 @if (col.status_ban == 0)
                                 {
