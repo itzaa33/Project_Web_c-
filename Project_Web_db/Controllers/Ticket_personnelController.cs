@@ -19,7 +19,7 @@ using Project_Web_db.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Project_Web_db.Models.ViewModel;
-using Microsoft.AspNetCore.Http;
+
 
 namespace Project_Web_db.Controllers
 {
@@ -56,6 +56,7 @@ namespace Project_Web_db.Controllers
                                            bs.date.Date == timeNow.Date)
                                     select new Search_busscheduleViewModel {
                                         id = bs.id ,
+                                        email_driver = personnel.email,
                                         time = bs.time,
                                         route = bs.route,
                                         station = bs.station_set,
@@ -66,12 +67,25 @@ namespace Project_Web_db.Controllers
 
                 ViewBag.route = route;
                 ViewBag.station = station;
+                
+               if(Request.Cookies["Userstate"] == "Driver")
+                {
+                    var email = _db.Personnels.Where(p => p.email == Request.Cookies["Useremail"]).FirstOrDefault();
 
-                return View("Search_busschedule", querySchedule);
+                    ViewBag.check_driver = querySchedule.Where(d => d.car_number == email.car_number);
+
+                    return View("Driver_Search_Busschedule", querySchedule);
+                }
+               else
+                {
+                    return View("Search_busschedule", querySchedule);
+                }
+               
                
             }
 
                 return View("Search_busschedule");
+
         }
 
         [HttpGet]
