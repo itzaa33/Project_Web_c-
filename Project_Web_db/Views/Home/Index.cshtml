@@ -2,6 +2,33 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-<input type="button" class="btn btn-info" value="ขาเข้า" onclick="location.href='@Url.Action("Search_busschedule", "Ticket_personnel", new { route = 1,station = 1 })'" />
-<input type="button" class="btn btn-info" value="ขาออก" onclick="location.href='@Url.Action("Search_busschedule", "Ticket_personnel", new { route = 2,station = 1 })'" />
+
+<body class="con">
+   
+   
+   
+    
+    <div class="bgcon">
+    </div>
+    
+   
+        <div class="myBlueDiv1">
+
+            <input type="button" class="button" value="ขาเข้า" onclick="location.href='@Url.Action("Search_busschedule", "Ticket_personnel", new { route = 1,station = 1 })'" />
+        </div>
+   
+
+        <div class="myBlueDiv2">
+
+            <input type="button" class="button" value="ขาออก" onclick="location.href='@Url.Action("Search_busschedule", "Ticket_personnel", new { route = 2,station = 1 })'" />
+
+        </div>
+    
+ 
+
+</body>
+
+
+
+
 

@@ -1,0 +1,314 @@
+﻿.bodycenter {
+    background-color: #f1f1f1;
+    padding: 20px;
+    text-align: center;
+    margin-left: -450px;
+    margin-top: -50px;
+}
+
+.header1 {
+    text-align: center;
+    padding: 3em 0 0 0;
+    background-color: #fff;
+    background-image: url(images/bg02.png), url(images/bg02.png), url(images/bg01.png);
+    background-position: top left, top left, top left;
+    background-size: 100% 6em, 100% 6em, auto;
+    background-repeat: no-repeat, no-repeat, repeat;
+}
+/*                 */
+
+
+.customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: #404040;
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin: 20px;
+    
+}
+
+    .customers td, .customers th {
+        /* border: 1px solid #808080;*/
+        padding: 8px;
+    }
+
+    .customers tr:nth-child(even) {
+        background-color: #808080;
+    }
+  .customers tr:nth-child(odd) {
+    background: #262525;
+}
+    .customers tr:hover {
+        background-color: #404040;
+    }
+
+    .customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: black;
+        color: white;
+    }
+
+
+/*                  */
+
+table, th, td {
+    /*border: 2px solid black;*/
+    text-align: center;
+    /* border-radius: 10px;*/
+}
+
+.bgcon {
+    background-color: black;
+    color: #111;
+    padding-top: 1000px;
+    padding-right: 200px;
+    padding-left: 200px;
+    /*border-radius: 4px;*/
+    margin: 20px;
+    /*box-shadow: 1px 1px 1px 0px #AAA;*/
+    opacity: 0.5;
+    filter: alpha(opacity=50);
+    align-content: center;
+}
+
+.con {
+    background-size: cover;
+    background-attachment: fixed;
+    background-image: url('../images/b.png');
+   
+}
+
+.ul1 {
+    list-style-type: none;
+    margin:0;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+     text-align: left;
+     left:auto;
+
+
+    
+}
+
+.li1 {
+    float:  left;
+    text-align:center;
+}
+
+    .li1 a {
+        /*display: block;*/
+        color: #fff;
+        font-size:17px;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+
+    }
+
+        .li1 a:hover {
+            background-color: #111;
+        }
+
+
+
+.container-fluid {
+    background-color: black;
+    width: 100%;
+    
+}
+
+.auto-style1 {
+    border: 2px solid red;
+    border-radius: 5px;
+}
+
+.button {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    background-color: #404040;
+    color: #fff;
+    border-radius: 12px;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 30px;
+    margin: 4px 2px;
+    cursor: pointer
+}
+
+.hh {
+    text-align: center;
+    text-transform: uppercase;
+    color: #4CAF50;
+}
+
+.myBlueDiv1  {
+    width: 500px;
+    height: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -300px;
+    margin-top: -50px;
+   
+}
+
+.myBlueDiv2 {
+    width: 500px;
+    height: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: 150px;
+    margin-top: -50px;
+    
+}
+
+.h {
+    height: 1000px;
+    width: 1600px;
+    text-align: center;
+}
+
+
+.inner_title_right {
+    display: table-cell;
+    vertical-align: middle;
+    color: #ffffff;
+    height: 220px;
+}
+
+.row_6 {
+    margin-left: 0;
+    height: 100%;
+}
+
+<style type="text/css" > .auto-style1 {
+    width: 95%;
+    height: 181px;
+    margin-left: 19px;
+    margin-right: 0px;
+}
+
+.auto-style2 {
+    width: 347px;
+}
+
+.container-fluid {
+    color: black;
+
+}
+
+.container {
+    padding-top: 5px;
+}
+
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    #customers td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    #customers tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #customers tr:hover {
+        background-color: #ddd;
+    }
+
+    #customers th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: #4CAF50;
+        color: white;
+    }
+
+.m {
+    /*background-color: rgba(55, 61, 73, 0.975);*/
+    background-image: url('../images/b.png');
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.padbar {
+    background-color: black;
+    color: #111;
+    padding-top: 20px;
+    padding-right: 200px;
+    padding-left: 200px;
+    /*border-radius: 4px;*/
+    margin: 20px;
+    /*box-shadow: 1px 1px 1px 0px #AAA;*/
+    
+    align-content: center;
+    width: 100%;
+}
+
+.textbar{
+    color: white;
+    font-size: 20px;
+    text-align: left;
+}
+.text1 {
+    width: 200px;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -100px;
+    margin-top: -50px;
+    color: white;
+    text-align: center;
+}
+.borderimg {
+    border: 10px solid transparent;
+    padding: 15px;
+    -webkit-border-image: url(border.png) 30 round; /* Safari 3.1-5 */
+    -o-border-image: url(border.png) 30 round; /* Opera 11-12.1 */
+    border-image: url(border.png) 30 round;
+}
+
+.button2 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+    .button2 span:after {
+        content: '\00bb';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -20px;
+        transition: 0.5s;
+    }
+
+.button2:hover span {
+    padding-right: 25px;
+}
+
+    .button2:hover span:after {
+        opacity: 1;
+        right: 0;
+    }
