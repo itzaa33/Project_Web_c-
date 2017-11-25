@@ -17,20 +17,20 @@
     @if (ViewBag.route == 1)
     {
         
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li>
+        <nav class="navbar padbar">
+            <div >
+                <ul class="ul1">
+                    <li class="li1">
                         <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 1})'>
                          โพหัก
                         </a>
                     </li>
-                    <li>
+                    <li class="li1">
                         <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 2 })'>
                         คริสเตียน
                         </a>
                      </li>
-                    <li>
+                    <li class="li1">
                         <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 3 })'>
                         บ้านแพ้ว
                         </a>
@@ -42,16 +42,16 @@
     else
     {
 
-        <nav class="navbar navbar-default">
-            <div class="container-fluid">
-                <ul class="nav navbar-nav">
-                    <li>
+        <nav class="navbar padbar">
+            <div >
+                <ul class="ul1">
+                    <li class="li1">
                         <a href="@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 2, station = 5})">
                         สายใต้
                         </a>
                     </li>
 
-                    <li>
+                    <li class="li1">
                         <a href="@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 2, station = 4})">
                             โพนิมิตร
                         </a>
@@ -71,7 +71,7 @@
 
             <input type="hidden" id="state" value="@Context.Session.GetString("Userstate").ToString()" />
 
-            <table class="table">
+            <table class="customers">
                 <thead>
                     <tr>
                         <th>หมายเลขรถ</th>
@@ -133,7 +133,7 @@
         {
             @if (Context.Session.GetString("Userstate") == "Ticketing")
             {
-                <div class="container">
+                <div class="text1">
                     ระบบยังไม่พร้อมใช้งาน
                     กรุณารอเจ้าหน้าที่เปิดทำการ
                     <br>
@@ -395,7 +395,8 @@
 
 </script>
 
-
+<body class="m">
+</body>
 
 
 

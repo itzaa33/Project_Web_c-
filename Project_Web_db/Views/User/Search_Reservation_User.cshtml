@@ -2,68 +2,78 @@
 
 @model List<Search_ReservationViewModel>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>หมายเลขรถ</th>
-            <th>สถานีที่ขึ้น</th>
-            <th>สถานีที่ลง</th>
-            <th>จำนวนที่นั่ง</th>
-            <th>ราคา</th>
-            <th>วัน-เวลา</th>
-            
-        </tr>
-    </thead>
 
-    <tbody>
-      
-        @if (Model.Count > 0)
-        {
-            @foreach (var col in Model)
+
+<body class="m">
+
+    <table class="customers">
+        <thead>
+            <tr>
+                <th>หมายเลขรถ</th>
+                <th>สถานีที่ขึ้น</th>
+                <th>สถานีที่ลง</th>
+                <th>จำนวนที่นั่ง</th>
+                <th>ราคา</th>
+                <th>วัน-เวลา</th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if (Model.Count > 0)
             {
+                @foreach (var col in Model)
+                {
 
 
-                <tr>
-                    <td>@col.car_number</td>
-                    @if (col.first_station == 1)
+                    <tr>
+                        <td>@col.car_number</td>
+                        @if (col.first_station == 1)
                     {
-                        <td> โพหัก</td>
+                            <td> โพหัก</td>
 
-                    }
-                    else if (col.first_station == 2)
-                    {
-                        <td>คริสเตียน</td>
-                    }
-                    else if (col.first_station == 3)
-                    {
-                        <td> บ้านแพ้ว</td>
-                    }
-                    else if (col.first_station == 4)
-                    {
-                        <td> โพนิมิต</td>
-                    }
-                    else if (col.first_station == 5)
-                    {
-                        <td>สายใต้</td>
-                    }
-                    <td>@col.last_station</td>
-                    <td>@col.seat</td>
-                    <td>@col.price</td>
-                    <td>@col.date</td>
+                        }
+                        else if (col.first_station == 2)
+                        {
+                            <td>คริสเตียน</td>
+                        }
+                        else if (col.first_station == 3)
+                        {
+                            <td> บ้านแพ้ว</td>
+                        }
+                        else if (col.first_station == 4)
+                        {
+                            <td> โพนิมิต</td>
+                        }
+                        else if (col.first_station == 5)
+                        {
+                            <td>สายใต้</td>
+                        }
+                        <td>@col.last_station</td>
+                        <td>@col.seat</td>
+                        <td>@col.price</td>
+                        <td>@col.date</td>
 
 
-                </tr>
+                    </tr>
 
+
+                }
 
             }
 
-        }
-        else
-        {
-        <p>ไม่มีข้อมูลในระบบ</p>
+            else
+            {
 
-        }
-    </tbody>
+                <div class="text1">
+                    ไม่มีข้อมูลในระบบ
+                </div>
+            }
+
+        </tbody>
 
 
-</table>
+    </table>
+
+</body>
