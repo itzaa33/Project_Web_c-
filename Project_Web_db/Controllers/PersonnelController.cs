@@ -139,11 +139,11 @@ namespace Project_Web_db.Controllers
         }
 
         [HttpGet]
-        public ActionResult get_profile(int id)
+        public ActionResult get_profile(string email)
         {
-            var query_user = _db.Users.Where(u => u.id == id).FirstOrDefault();
+            var query_user = _db.Users.Where(u => u.email == email).FirstOrDefault();
 
-            var query_Personnel = _db.Personnels.Where(p => p.id == id).FirstOrDefault();
+            var query_Personnel = _db.Personnels.Where(p => p.email == email).FirstOrDefault();
 
             if(query_user != null)
             {
@@ -494,6 +494,87 @@ namespace Project_Web_db.Controllers
          
 
             return View("Personnel_Search_bs", query);
+        }
+
+        [HttpPost]
+        public ActionResult change_state()
+        {
+            
+            if(Request.Form["state_user"] == "User")
+            {
+                var query = _db.Users.Where(u => u.email == Request.Form["state_user_email"]).First();
+
+                _db.Users.Remove(query);
+
+              
+                if(Request.Form["select_state"] == "Ticketing")
+                {
+                    var newpersonnel = new Personnel
+                    {
+
+                        email = query.email,
+                        name = query.name,
+                        password = query.password,
+                        provider = "Normal",
+                        phone_number = query.phone_number,
+                        state = Request.Form["select_state1"],
+                        status_ban = query.status_ban,
+                        money = query.money,
+                        date = query.date,
+                        date_update = DateTime.Now
+
+                    };
+                    _db.Personnels.Add(newpersonnel);
+                    _db.SaveChanges();
+                    return Redirect($"/Personnel/Redirect_Search_user/{newpersonnel.email}");
+                }
+                else
+                {
+                    var newpersonnel = new Personnel
+                    {
+
+                        email = query.email,
+                        name = query.name,
+                        password = query.password,
+                        provider = "Normal",
+                        phone_number = query.phone_number,
+                        state = Request.Form["select_state1"],
+                        car_number = int.Parse(Request.Form["changcar_number1"]),
+                        status_ban = query.status_ban,
+                        money = query.money,
+                        date = query.date,
+                        date_update = DateTime.Now
+
+                    };
+                    _db.Personnels.Add(newpersonnel);
+                    _db.SaveChanges();
+
+                    return Redirect($"/Personnel/Redirect_Search_user/{newpersonnel.email}");
+                }
+               
+
+             
+            }
+            else
+            {
+
+                    var updatequery = _db.Personnels.Where(up => up.email == Request.Form["state_user_email"]).First();
+
+                    updatequery.state = Request.Form["select_state1"];
+
+                    updatequery.car_number = int.Parse(Request.Form["changcar_number1"]);
+
+                    _db.Personnels.Update(updatequery);
+
+                _db.SaveChanges();
+
+                return Redirect($"/Personnel/Redirect_Search_user/{updatequery.email}");
+
+
+
+
+            }
+            
         }
     }
 }

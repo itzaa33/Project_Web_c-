@@ -170,7 +170,7 @@ namespace Project_Web_db.Controllers
                  
                 _db.SaveChanges();
 
-                return Json(new { val_s = "ระบบได้ทำการลบการจองของท่านแล้ว",check = true });
+                return Json(new { val_s = "ระบบได้ทำการยกเลิกการจองของท่านแล้ว",check = true });
                 
             }
             else

@@ -71,7 +71,7 @@ namespace Project_Web_db.Controllers
                if(Request.Cookies["Userstate"] == "Driver")
                 {
                     var email = _db.Personnels.Where(p => p.email == Request.Cookies["Useremail"]).FirstOrDefault();
-
+                    
                     ViewBag.check_driver = querySchedule.Where(d => d.car_number == email.car_number);
 
                     return View("Driver_Search_Busschedule", querySchedule);
@@ -367,7 +367,7 @@ namespace Project_Web_db.Controllers
             bool checkuser = false;
 
 
-            if (HttpContext.Session.GetString("UserID") != null && query != 0)
+            if (Request.Cookies["Useremail"] != null )
             {
                 string email_User = Request.Cookies["Useremail"];
                 
@@ -379,8 +379,8 @@ namespace Project_Web_db.Controllers
 
                 if (user != null)
                 {
-                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.email_user_ticket == user.email);
-
+                    var checkReservation = _db.Reservations.Where(r => r.id_bus_schedule == id_Bus && r.email_user_ticket == user.email).FirstOrDefault();
+                   
                     if(checkReservation != null)
                     {
                         checkuser = true;
