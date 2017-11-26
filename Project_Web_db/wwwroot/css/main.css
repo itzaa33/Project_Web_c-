@@ -18,7 +18,7 @@
 
 
 
-.customers1 {
+.customers2 {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: #404040;
     width: 100%;
@@ -26,32 +26,33 @@
     color: white;
     margin: 20px;
 }
-
-    .customers1 td, .customers th {
+.textcolor{
+    color: #ffea00;
+}
+    .customers2 td, .customers2 th {
         /* border: 1px solid #808080;*/
         padding: 8px;
     }
 
-    .customers1 tr:nth-child(even) {
+    .customers2 tr:nth-child(even) {
         background-color: #808080;
     }
 
-    .customers1 tr:nth-child(odd) {
+    .customers2 tr:nth-child(odd) {
         background: #262525;
     }
 
-    .customers1 tr:hover {
+    .customers2 tr:hover {
         background-color: #404040;
     }
 
-    .customers1 th {
+    .customers2 th {
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: center;
         background-color: black;
-        color: #fade06;
+        color: white;
     }
-
 
 
 
@@ -126,6 +127,11 @@ table, th, td {
     background-attachment: fixed;
     background-image: url('../images/b.png');
    
+}
+.con1 {
+    background-size: cover;
+    background-attachment: fixed;
+    background-image: url('../images/5555.png');
 }
 
 .ul1 {
@@ -365,3 +371,12 @@ th {
         opacity: 1;
         right: 0;
     }
+.texttext {
+    color: #ffffff;
+    left: 50%;
+    font-size: 30px;
+}
+
+.max.row {
+    margin-top:-15em;
+}

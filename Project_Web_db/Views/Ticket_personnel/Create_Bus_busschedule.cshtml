@@ -5,10 +5,10 @@
         <div class="row">
 
             <form asp-controller="Ticket_personnel" asp-action="Create_Bus_busschedule" method="Post">
-                <table class="customers1">
+                <table class="customers">
                     <thead>
                         <tr>
-                            <th >
+                            <th class="textcolor">
                                 รอบที่
                             </th>
                             <th>
@@ -19,14 +19,14 @@
                             </th>
                         </tr>
 
-                    <tbody id="row"></tbody>
+                    <tbody style="color: brown" id="row"></tbody>
                 </table>
                 
                 <input type="hidden" id="count" name="count" value="0" />
-                <button type="submit" class="btn btn-primary">OK</button>
+                <button  type="submit" class="btn btn-primary" style=" position: fixed; align-items:center; left:45%;">OK</button>
             </form>
 
-            <button type="button" name="button" onclick="onAddClick()">ADD</button>
+            <button type="button"  class="btn btn-primary" style=" position: fixed; align-items:center; left:50%;  " name="button" onclick="onAddClick()">ADD</button>
 
         </div>
     </div>
