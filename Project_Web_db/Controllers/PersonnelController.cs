@@ -183,7 +183,7 @@ namespace Project_Web_db.Controllers
                         email_user = query_User.email,
                         email_personnel = Request.Cookies["Useremail"],
                         command = 1,
-                        explanation = Request.Form["explanation"],
+                        explanation = Request.Form["explanation_ban"],
                         date = DateTime.Now
                     };
 
@@ -220,7 +220,7 @@ namespace Project_Web_db.Controllers
                         email_personnel_reaction = query_Personnel.email,
                         email_personnel = Request.Cookies["Useremail"],
                         command = 1,
-                        explanation = Request.Form["explanation"],
+                        explanation = Request.Form["explanation_ban"],
                         date = DateTime.Now
                     };
 
@@ -477,37 +477,45 @@ namespace Project_Web_db.Controllers
                 {
                     var query_Personnel = _db.Personnels.Where(p => p.name == Request.Form["Search"]).FirstOrDefault();
 
-                    var query_history = (from b in _db.Bans
+                    if(query_Personnel != null)
+                    {
+                        var query_history = (from b in _db.Bans
 
-                                         join u in _db.Users
-                                         on b.email_user equals u.email into new_u
+                                             join u in _db.Users
+                                             on b.email_user equals u.email into new_u
 
-                                         join pr in _db.Personnels
-                                         on b.email_personnel_reaction equals pr.email into new_Pr
+                                             join pr in _db.Personnels
+                                             on b.email_personnel_reaction equals pr.email into new_Pr
 
-                                         join p in _db.Personnels
-                                         on b.email_personnel equals p.email
+                                             join p in _db.Personnels
+                                             on b.email_personnel equals p.email
 
-                                         where (b.email_personnel_reaction == query_Personnel.email)
-                                         orderby b.date descending
+                                             where (b.email_personnel_reaction == query_Personnel.email)
+                                             orderby b.date descending
 
-                                         from user in new_u.DefaultIfEmpty()
-                                         from personnel in new_Pr.DefaultIfEmpty()
-                                         select new History_ban_ViewModel
-                                         {
-                                             email_user = personnel.email,
-                                             name_user = personnel.name,
-                                             phone_number_user = personnel.phone_number,
-                                             state_user = personnel.state,
-                                             status_user = personnel.status_ban,
-                                             command = b.command,
-                                             name_personnel = p.name,
-                                             state_personnel = p.state,
-                                             explanation = b.explanation,
-                                             date = b.date
-                                         }).ToList();
+                                             from user in new_u.DefaultIfEmpty()
+                                             from personnel in new_Pr.DefaultIfEmpty()
+                                             select new History_ban_ViewModel
+                                             {
+                                                 email_user = personnel.email,
+                                                 name_user = personnel.name,
+                                                 phone_number_user = personnel.phone_number,
+                                                 state_user = personnel.state,
+                                                 status_user = personnel.status_ban,
+                                                 command = b.command,
+                                                 name_personnel = p.name,
+                                                 state_personnel = p.state,
+                                                 explanation = b.explanation,
+                                                 date = b.date
+                                             }).ToList();
 
-                    return View("History_ban", query_history);
+                        return View("History_ban", query_history);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Search_History_banView", "Personnel");
+                    }
+
                 }
 
 
