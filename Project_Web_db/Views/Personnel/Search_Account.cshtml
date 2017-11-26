@@ -127,7 +127,7 @@
                                     }
 
 
-                                    @if (Context.Session.GetString("Userstate") != "Driver")
+                                    @if (col.state == "User")
                                     {
 
                                         <button class="btn btn-warning" id="moneymodel" name="moneymodel" onclick="addmoney('@col.email')">เติมเงิน</button>
