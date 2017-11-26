@@ -115,7 +115,7 @@
                         </th>
 
                         <th>
-                            @if (col.state != "Admin" && col.email != Context.Session.GetString("Useremail") && col.state == "User")
+                            @if (col.state != "Admin" && col.email != Context.Session.GetString("Useremail") )
                             {
                                 @if (col.status_ban == 0)
                                 {
@@ -146,20 +146,7 @@
                                 }
 
                             }
-                            else if (col.state != "User" && col.state != "Admin" && col.email != Context.Session.GetString("Useremail"))
-                            {
-
-                                @if (col.status_ban == 0)
-                                {
-                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax('@col.email')">แบน</button>
-
-                                }
-                                else
-                                {
-                                    <button class="btn btn-success" id="unbanmodel" name="unbanmodel" onclick="unban_ajax('@col.email')">ปลดแบน</button>
-
-                                }
-                            }
+       
 
 
                         </th>
