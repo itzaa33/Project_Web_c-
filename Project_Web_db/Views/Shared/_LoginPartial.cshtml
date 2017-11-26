@@ -35,6 +35,7 @@
                      }
                      else if (@Context.Session.GetString("Userstate") == "Driver")
                      {
+                        <li><a href='@Url.Action("Search_userView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;Search</a></li>
                         <li><a href='@Url.Action("Search_History_banView", "Personnel")'><span class="glyphicon glyphicon-calendar"></span>&nbsp;History ban</a></li>
 
                      }
