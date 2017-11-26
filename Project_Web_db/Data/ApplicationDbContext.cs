@@ -35,11 +35,7 @@ namespace Project_Web_db.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {   
-            builder.Entity<User>()
-                        .HasIndex(x => x.email).IsUnique();
-
-            builder.Entity<Personnel>()
-                       .HasIndex(x => x.email).IsUnique();
+          
 
             base.OnModelCreating(builder);
 

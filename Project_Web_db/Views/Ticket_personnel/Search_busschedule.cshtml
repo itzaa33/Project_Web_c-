@@ -226,26 +226,21 @@
     });
 
 
-    function forValue()
-    {
-        for (var i = 0; i < @Model.Count; i++) {
-
-
+    function forValue() {
+        for (var i = 0; i < @Model.Count; i++)
+        {
             id_Bus = $("#id_" + i + "").val();
 
             checktime(i);
 
             ajaxque(id_Bus, i);
 
-
-
-
-
         }
 
     }
 
-    function checktime(index) {
+    function checktime(index)
+    {
 
         var timeIstable = $("#time_" + index + "").val();
 
@@ -267,12 +262,14 @@
         }
     }
 
-    function ajaxdelete(id,index) {
+    function ajaxdelete(id, index)
+    {
         $.ajax({
             type: "get",
             url: "/User/deleteReservation",
             data: { id: id },
-            success: function (data) {
+            success: function (data)
+            {
 
                 if (data.check == true)
                 {
@@ -282,15 +279,12 @@
                     location.reload();
 
                     alert(data.val_s);
-
-   
                 }
                 else
                 {
                     location.reload();
                     alert(data.val_s);
-                
-                   
+
                 }
 
              forValue();
@@ -299,7 +293,8 @@
         });
     }
 
-    function ajaxque(id_Bus, index) {
+    function ajaxque(id_Bus, index)
+    {
                 state = $("#state").val();
 
                 var timeIstable = $("#time_" + index + "").val();
@@ -323,33 +318,48 @@
 
                         if (data.check == true)//เช็คการจองของไอดี
                         {
-                            if (data.count == 15) {
+                            if (data.count == 15)
+                            {
                                 $("#data_" + index + "").attr("disabled", "disabled");
                                 $("#data_" + index + "").html("ที่นั่งเต็มเต็ม");
                                 $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
 
                             }
-                            else {
+                            else
+                            {
 
 
+                                if (state != "Ticketing")
+                                {
+                                    
+                                    $("#data_" + index + "").attr("disabled", "disabled");
+                                    $("#data_" + index + "").html("จองแล้ว");
+                                    $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
 
-                                $("#data_" + index + "").attr("disabled", "disabled");
-                                $("#data_" + index + "").html("จองแล้ว");
-                                $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
+                                }
+                                else
+                                {
+                                    $("#data_" + index + "").html(data.count + "/15");
 
-                                if (state == "User") {
+                                }
 
-                                    if (timeNow < timecancel) {
+
+                                if (state == "User")
+                                {
+
+                                    if (timeNow < timecancel)
+                                    {
 
 
                                         $("#delete_" + index + "").attr("style", "display:inline");
-                           
-                                       
+
+
                                     }
-                                    else {
+                                    else
+                                    {
                                         $("#delete_" + index + "").attr("style", "display:none");
-                            
-                           
+
+
                                     }
 
                                 }
@@ -358,15 +368,18 @@
                             }
 
                         }
-                        else {
-                            if (data.count == 15) {
+                        else
+                        {
+                            if (data.count == 15)
+                            {
 
                                 $("#data_" + index + "").attr("disabled", "disabled");
                                 $("#data_" + index + "").html("ที่นั่งเต็มเต็ม");
                                 $("#data_" + index + "").removeClass('btn btn-info').addClass('btn btn-warning');
 
                             }
-                            else {
+                            else
+                            {
 
                                 $("#data_" + index + "").html(data.count + "/15");
 

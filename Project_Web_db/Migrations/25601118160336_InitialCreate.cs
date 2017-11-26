@@ -9,94 +9,70 @@ namespace Project_Web_db.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-           /* migrationBuilder.CreateTable(
-                name: "AspNetRoles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
-                });
+            /* migrationBuilder.CreateTable(
+                 name: "AspNetRoles",
+                 columns: table => new
+                 {
+                     Id = table.Column<string>(nullable: false),
+                     ConcurrencyStamp = table.Column<string>(nullable: true),
+                     Name = table.Column<string>(maxLength: 256, nullable: true),
+                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
+                 },
+                 constraints: table =>
+                 {
+                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                 });
+
+             migrationBuilder.CreateTable(
+                 name: "AspNetUsers",
+                 columns: table => new
+                 {
+                     Id = table.Column<string>(nullable: false),
+                     AccessFailedCount = table.Column<int>(nullable: false),
+                     ConcurrencyStamp = table.Column<string>(nullable: true),
+                     Email = table.Column<string>(maxLength: 256, nullable: true),
+                     EmailConfirmed = table.Column<bool>(nullable: false),
+                     LockoutEnabled = table.Column<bool>(nullable: false),
+                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                     PasswordHash = table.Column<string>(nullable: true),
+                     PhoneNumber = table.Column<string>(nullable: true),
+                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                     SecurityStamp = table.Column<string>(nullable: true),
+                     TwoFactorEnabled = table.Column<bool>(nullable: false),
+                     UserName = table.Column<string>(maxLength: 256, nullable: true)
+                 },
+                 constraints: table =>
+                 {
+                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                 });*/
+
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });*/
+              name: "Users",
+              columns: table => new
+              {
+                  id = table.Column<int>(nullable: false)
+                      .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                  date = table.Column<DateTime>(nullable: false),
+                  date_update = table.Column<DateTime>(nullable: false),
+                  email = table.Column<string>(maxLength: 191, nullable: false),
+                  money = table.Column<int>(nullable: false),
+                  name = table.Column<string>(nullable: true),
+                  password = table.Column<string>(maxLength: 255, nullable: false),
+                  phone_number = table.Column<string>(nullable: true),
+                  provider = table.Column<string>(nullable: true),
+                  state = table.Column<string>(nullable: true),
+                  status_ban = table.Column<int>(nullable: false)
+              },
+              constraints: table =>
+              {
+                  table.PrimaryKey("PK_Users", x => new {  x.id , x.email });
+    
+              });
 
-            migrationBuilder.CreateTable(
-                name: "Bans",
-                columns: table => new
-                {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    command = table.Column<int>(nullable: false),
-                    date = table.Column<DateTime>(nullable: false),
-                    explanation = table.Column<string>(nullable: true),
-                   email_personnel = table.Column<string>(maxLength: 191, nullable: false),
-                    email_user = table.Column<string>(maxLength: 191, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bans", x => x.id);
-                });
 
-            migrationBuilder.CreateTable(
-                name: "Bus_schedules",
-                columns: table => new
-                {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    date = table.Column<DateTime>(nullable: false),
-                    email_personnel = table.Column<string>(maxLength: 191, nullable: false),
-                    route = table.Column<int>(nullable: false),
-                    station_set = table.Column<int>(nullable: false),
-                    time = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bus_schedules", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Personnel_Add_Users",
-                columns: table => new
-                {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    date = table.Column<DateTime>(nullable: false),
-                    email_personnel = table.Column<string>(maxLength: 191, nullable: false),
-                    email_user = table.Column<string>(maxLength: 191, nullable: false),
-                    money = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Personnel_Add_Users", x => x.id);
-                });
 
             migrationBuilder.CreateTable(
                 name: "Personnels",
@@ -118,8 +94,117 @@ namespace Project_Web_db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Personnels", x => x.id);
+                    table.PrimaryKey("PK_Personnels", x => new { x.id ,x.email});
                 });
+
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Personnels_email",
+                table: "Personnels",
+                column: "email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_email",
+                table: "Users",
+                column: "email",
+                unique: true);
+
+
+            migrationBuilder.CreateTable(
+              name: "Bus_schedules",
+              columns: table => new
+              {
+                  id = table.Column<int>(nullable: false)
+                      .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                  date = table.Column<DateTime>(nullable: false),
+                  email_personnel = table.Column<string>(maxLength: 191, nullable: false),
+                  route = table.Column<int>(nullable: false),
+                  station_set = table.Column<int>(nullable: false),
+                  time = table.Column<string>(nullable: true)
+              },
+              constraints: table =>
+              {
+                  table.PrimaryKey("PK_Bus_schedules", x => new { x.id });
+
+
+                  table.ForeignKey(
+                    name: "FK_Bus_schedules",
+                    column: x => x.email_personnel,
+                    principalTable: "Personnels",
+                    principalColumn: "email",
+                    onDelete: ReferentialAction.Cascade);
+
+
+              });
+
+
+
+            migrationBuilder.CreateTable(
+                name: "Bans",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    command = table.Column<int>(nullable: false),
+                    date = table.Column<DateTime>(nullable: false),
+                    explanation = table.Column<string>(nullable: true),
+                   email_personnel = table.Column<string>(maxLength: 191, nullable: false),
+                    email_user = table.Column<string>(maxLength: 191, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bans", x => new { x.id });
+
+                    table.ForeignKey(
+                      name: "FK_Bans_Personnels_email",
+                      column: x => x.email_personnel,
+                      principalTable: "Personnels",
+                      principalColumn: "email",
+                      onDelete: ReferentialAction.Cascade);
+
+                    table.ForeignKey(
+                     name: "FK_Bans_User_emaill",
+                     column: x => x.email_user,
+                     principalTable: "Users",
+                     principalColumn: "email",
+                     onDelete: ReferentialAction.Cascade);
+
+                });
+
+          
+
+            migrationBuilder.CreateTable(
+                name: "Personnel_Add_Users",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    date = table.Column<DateTime>(nullable: false),
+                    email_personnel = table.Column<string>(maxLength: 191, nullable: false),
+                    email_user = table.Column<string>(maxLength: 191, nullable: false),
+                    money = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personnel_Add_Users", x => new { x.id  });
+
+                    table.ForeignKey(
+                     name: "FK_Personnel_Add_Users_User_email",
+                     column: x => x.email_user,
+                     principalTable: "Users",
+                     principalColumn: "email",
+                     onDelete: ReferentialAction.Cascade);
+
+                    table.ForeignKey(
+                      name: "FK_Personnel_Add_Users_Personnels_email",
+                      column: x => x.email_personnel,
+                      principalTable: "Personnels",
+                      principalColumn: "email",
+                      onDelete: ReferentialAction.Cascade);
+
+                });
+
 
             migrationBuilder.CreateTable(
                 name: "Reservations",
@@ -137,30 +222,24 @@ namespace Project_Web_db.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reservations", x => x.id);
+                    table.PrimaryKey("PK_Reservations", x => new { x.id});
+
+                    table.ForeignKey(
+                        name: "FK_Reservations_Personnels_email",
+                        column: x => x.email_personnel_ticket,
+                        principalTable: "Personnels",
+                        principalColumn: "email",
+                        onDelete: ReferentialAction.Cascade);
+
+                    table.ForeignKey(
+                        name: "FK_Reservations_Users_email",
+                        column: x => x.email_user_ticket,
+                        principalTable: "Users",
+                        principalColumn: "email",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    id = table.Column<int>(nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    date = table.Column<DateTime>(nullable: false),
-                    date_update = table.Column<DateTime>(nullable: false),
-                    email = table.Column<string>(maxLength: 191, nullable: false),
-                    money = table.Column<int>(nullable: false),
-                    name = table.Column<string>(nullable: true),
-                    password = table.Column<string>(maxLength: 255, nullable: false),
-                    phone_number = table.Column<string>(nullable: true),
-                    provider = table.Column<string>(nullable: true),
-                    state = table.Column<string>(nullable: true),
-                    status_ban = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.id);
-                });
+          
 
             /*migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
@@ -305,17 +384,6 @@ namespace Project_Web_db.Migrations
                 column: "NormalizedUserName",
                 unique: true);*/
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Personnels_email",
-                table: "Personnels",
-                column: "email",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_email",
-                table: "Users",
-                column: "email",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

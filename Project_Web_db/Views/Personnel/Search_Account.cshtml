@@ -123,25 +123,25 @@
                                     @if (Context.Session.GetString("Userstate") == "Admin")
                                     {
 
-                                        <button class="btn btn-primary" id="statemodel" name="statemodel" onclick="location.href='@Url.Action("Chang_state", "Personnel", new {id = col.id})'">เลือกระดับ</button>
+                                        <button class="btn btn-primary" id="statemodel" name="statemodel" onclick="chang_state('@col.email')" >ระดับ</button>
                                     }
 
 
                                     @if (Context.Session.GetString("Userstate") != "Driver")
                                     {
 
-                                        <button class="btn btn-warning" id="moneymodel" name="moneymodel" onclick="addmoney(@col.id)">เติมเงิน</button>
+                                        <button class="btn btn-warning" id="moneymodel" name="moneymodel" onclick="addmoney('@col.email')">เติมเงิน</button>
                          
                                     }
 
 
 
-                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax(@col.id)" >แบน</button>
+                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax("col.email)" >แบน</button>
 
                                 }
                                 else
                                 {
-                                    <button class="btn btn-success" id="unbanmodel" name="unbanmodel" onclick="unban_ajax(@col.id)">ปลดแบน</button>
+                                    <button class="btn btn-success" id="unbanmodel" name="unbanmodel" onclick="unban_ajax('@col.email')">ปลดแบน</button>
 
                                 }
 
@@ -289,18 +289,110 @@
     </div>
 </div>
 
+<!---------------------------------------changstate------------------------------------>
+
+<div class="modal fade" id="changstate" role="dialog">
+    <div class="modal-dialog">
+
+        <form asp-controller="Personnel" asp-action="change_state" method="post">
+
+            <input type="hidden" id="state_user" name="state_user" />
+            <input type="hidden" id="state_user_email" name="state_user_email" />
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">เปลี่ยนระดับ</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div>
+                        <label>Email</label>
+                        <p id="state_emailmodel" ></p>
+                    </div>
+
+                    <div>
+                        <label>Name </label>
+                        <p id="state_namemodel"></p>
+                    </div>
+
+                    <div>
+                        <label>State </label>
+                        <p id="state_statemodel"></p>
+                    </div>
+
+                    <div>
+                        <label>Chang State</label>
+                        
+                        <select class="form-control form-control-lg" name="select_state1" id="select_state" >
+                            <option value="Ticketing" selected>Ticketing</option>
+                            <option value="Driver ">Driver </option>
+                        </select>
+                    </div>
+
+                    <div id="from-driver" name=""from-driver" style="display : none">
+                       
+                            <label>Select Car Number</label> 
+                            <select class="form-control form-control-lg" name="changcar_number1" id="changcar_number" >
+                                <option value="1" selected>1</option>
+                                <option value="2">2 </option>
+                                <option value="3">3 </option>
+                                <option value="4">4 </option>
+                                <option value="5">5 </option>
+                                <option value="6">6 </option>
+                                <option value="7">7 </option>
+                                <option value="8">8 </option>
+                                <option value="9">9 </option>
+                                <option value="10">10 </option>
+                            </select>
+
+                    </div>
+                    
+
+                   </div>
+
+                    <div class="modal-footer">
+                    <button type="submit" name="submit" id="submit" class="btn btn-default">OK</button>
+                    </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
 
 
 <script>
 
-    function ban_ajax(id) {
+    $('#select_state').change(function ()
+    {
 
-      
+        var check = $('#select_state').val();
+
+   
+        if (check == "Ticketing")
+        {
+            $("#from-driver").hide();
+
+        }
+        else if(check == "Driver")
+        {
+
+            $("#from-driver").show();
+        }
+    });
+
+    function ban_ajax(email)
+    {
+
+
+        alert(email);
 
         $.ajax({
             type: "get",
             url: "/Personnel/get_profile",
-            data: { id: id },
+            data: { email: email },
             success: function (data) {
 
                 $('#emailmodel').text(data.email);
@@ -316,13 +408,13 @@
 
     }
 
-    function unban_ajax(id) {
+    function unban_ajax(email) {
 
 
         $.ajax({
             type: "get",
             url: "/Personnel/get_profile",
-            data: { id: id },
+            data: { email: email },
             success: function (data) {
 
                 $('#unban_emailmodel').text(data.email);
@@ -341,13 +433,13 @@
 
     }
 
-    function addmoney(id) {
+    function addmoney(email) {
 
 
         $.ajax({
             type: "get",
             url: "/Personnel/get_profile",
-            data: { id: id },
+            data: { email: email },
             success: function (data) {
 
                 $('#money_emailmodel').text(data.email);
@@ -366,6 +458,34 @@
 
 
 
+
+    }
+
+    function chang_state(email)
+    {
+
+        $.ajax({
+            type: "get",
+            url: "/Personnel/get_profile",
+            data: { email: email },
+            success: function (data) {
+
+                $('#state_emailmodel').text(data.email);
+
+                $('#state_namemodel').text(data.name);
+
+                $('#state_user_email').val(data.email);
+
+                $('#state_statemodel').text(data.state);
+
+                $('#state_user').val(data.state);
+                
+                
+
+                $('#changstate').modal();
+            }
+
+        });
 
     }
 
