@@ -15,9 +15,57 @@
     background-size: 100% 6em, 100% 6em, auto;
     background-repeat: no-repeat, no-repeat, repeat;
 }
-/*                 */
 
 
+
+.customers1 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: #404040;
+    width: 100%;
+    text-align: center;
+    color: white;
+    margin: 20px;
+}
+
+    .customers1 td, .customers th {
+        /* border: 1px solid #808080;*/
+        padding: 8px;
+    }
+
+    .customers1 tr:nth-child(even) {
+        background-color: #808080;
+    }
+
+    .customers1 tr:nth-child(odd) {
+        background: #262525;
+    }
+
+    .customers1 tr:hover {
+        background-color: #404040;
+    }
+
+    .customers1 th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: center;
+        background-color: black;
+        color: #fade06;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*                 */ 
 .customers {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: #404040;
@@ -25,7 +73,6 @@
     text-align: center;
     color: white;
     margin: 20px;
-    
 }
 
     .customers td, .customers th {
@@ -111,14 +158,15 @@ table, th, td {
 
         .li1 a:hover {
             background-color: #111;
+      
         }
 
 
 
 .container-fluid {
-    background-color: black;
+    background-color: #404040;
     width: 100%;
-    
+    height:50%;
 }
 
 .auto-style1 {
@@ -187,12 +235,7 @@ table, th, td {
     height: 100%;
 }
 
-<style type="text/css" > .auto-style1 {
-    width: 95%;
-    height: 181px;
-    margin-left: 19px;
-    margin-right: 0px;
-}
+
 
 .auto-style2 {
     width: 347px;
@@ -278,6 +321,16 @@ th {
     margin-left: -100px;
     margin-top: -50px;
     color: white;
+    text-align: center;
+}
+.text2 {
+    width: 200px;
+    height: 100px;
+    position: fixed;
+   
+    margin-left: -100px;
+    margin-top: -50px;
+    color: #49d361;
     text-align: center;
 }
 .borderimg {

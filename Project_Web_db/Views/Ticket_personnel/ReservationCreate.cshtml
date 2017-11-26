@@ -9,10 +9,6 @@
         <div align="center">
             <form asp-controller="Ticket_personnel" asp-action="ReservationCreate" method="post">
 
-
-              
-
-
                     <div>
                         <input type="hidden" id="id_bus" name="id_bus" value="@Model.id" />
                         <input type="hidden" id="user_money" name="user_money" value="@Context.Session.GetString("Usermoney")" />

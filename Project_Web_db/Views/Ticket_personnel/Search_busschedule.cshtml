@@ -11,30 +11,30 @@
 
 <div class="container body-content">
 
-   <input type="hidden" id="popup" value="@ViewBag.alert" />
+    <input type="hidden" id="popup" value="@ViewBag.alert" />
 
 
     @if (ViewBag.route == 1)
     {
-        
-        <nav class="navbar padbar">
-            <div >
-                <ul class="ul1">
+
+        <nav class="nav padbar">
+            <div>
+                <ul class="nav ul1">
                     <li class="li1">
                         <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 1})'>
-                         โพหัก
+                            โพหัก
                         </a>
                     </li>
                     <li class="li1">
                         <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 2 })'>
-                        คริสเตียน
+                            คริสเตียน
                         </a>
-                     </li>
+                    </li>
                     <li class="li1">
                         <a href='@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 1, station = 3 })'>
-                        บ้านแพ้ว
+                            บ้านแพ้ว
                         </a>
-                   </li>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -42,12 +42,12 @@
     else
     {
 
-        <nav class="navbar padbar">
-            <div >
-                <ul class="ul1">
+        <nav class="nav padbar">
+            <div>
+                <ul class="nav ul1">
                     <li class="li1">
                         <a href="@Url.Action("Search_busschedule", "Ticket_personnel", new {route = 2, station = 5})">
-                        สายใต้
+                            สายใต้
                         </a>
                     </li>
 
@@ -63,7 +63,7 @@
 
     @if (Context.Session.GetString("UserID") != null && Context.Session.GetString("Userstate") != "Driver")
     {
-      
+
 
         @if (Model.Count() != 0)
         {
@@ -85,17 +85,17 @@
                                 ดูผู้โดยสาร
                             </th>
                         }
-                      
+
                     </tr>
-                 </thead>
-                
-                     <tbody>
-                        @{int index = 0;}
-                        @foreach (var col in Model)
-                        {
-                        
-                            <input type="hidden" id="id_@index"  value="@col.id" />
-                            <input type="hidden" id="time_@index" value="@col.time" />
+                </thead>
+
+                <tbody>
+                    @{int index = 0;}
+                    @foreach (var col in Model)
+                    {
+
+                        <input type="hidden" id="id_@index" value="@col.id" />
+                        <input type="hidden" id="time_@index" value="@col.time" />
 
 
                             <tr>
@@ -103,9 +103,9 @@
                                 <td>@col.phone_number</td>
                                 <td>@col.time</td>
                                 <td>
-                                    <button class="btn btn-info" id="data_@index"  value="" onclick="location.href='@Url.Action("ReservationCreateView", "Ticket_personnel", new { id = col.id })'"></button>
-                                   
-                                    @if (Context.Session.GetString("Userstate") == "User" )
+                                    <button class="btn btn-info" id="data_@index" value="" onclick="location.href='@Url.Action("ReservationCreateView", "Ticket_personnel", new { id = col.id })'"></button>
+
+                                    @if (Context.Session.GetString("Userstate") == "User")
                                     {
                                         <button style="display:none;" class="btn btn-danger" id="delete_@index" value="" onclick="ajaxdelete(@col.id,@index)">ยกเลิกการจอง</button>
                                     }
@@ -120,87 +120,87 @@
                                 }
 
                             </tr>
-                                
 
-                            index++;
-                        }
-                    </tbody>
 
-                
+                        index++;
+                    }
+                </tbody>
+
+
             </table>
-        }
-        else
-        {
-            @if (Context.Session.GetString("Userstate") == "Ticketing")
-            {
-                <div class="text1">
-                    ระบบยังไม่พร้อมใช้งาน
-                    กรุณารอเจ้าหน้าที่เปิดทำการ
-                    <br>
-                    <input type="button" class="btn btn-warning" value="สร้างตารางการเดินรถ" onclick="location.href='@Url.Action("Create_Bus_busscheduleView", "Ticket_personnel",new { route = ViewBag.route, station = ViewBag.station })'" />
-                </div>
-
-            }
-            else
-            {
-                <div class="container">
-                    ระบบยังไม่พร้อมใช้งาน
-                    กรุณารอเจ้าหน้าที่เปิดทำการ
-                </div>
-
-            }
-
-        }
-    }
-    else
-    {
-        @if (Model.Count() != 0)
-        {
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>หมายเลขรถ</th>
-                        <th>เวลา</th>
-                        <th>เลือก</th>
-                    </tr>
-                 </thead>
-                
-                     <tbody>
-                        @{int index = 0;}
-                        @foreach (var col in Model)
+                        }
+                        else
                         {
-                        
-                            <input type="hidden" id="id_@index"  value="@col.id" />
-                            <input type="hidden" id="time_@index" value="@col.time" />
+                            @if (Context.Session.GetString("Userstate") == "Ticketing")
+                            {
+                                <div class="text1">
+                                    ระบบยังไม่พร้อมใช้งาน
+                                    กรุณารอเจ้าหน้าที่เปิดทำการ
+                                    <br>
+                                    <input type="button" class="btn btn-warning" value="สร้างตารางการเดินรถ" onclick="location.href='@Url.Action("Create_Bus_busscheduleView", "Ticket_personnel",new { route = ViewBag.route, station = ViewBag.station })'" />
+                                </div>
 
+                            }
+                            else
+                            {
+                                <div class="text1">
+                                    ระบบยังไม่พร้อมใช้งาน
+                                    กรุณารอเจ้าหน้าที่เปิดทำการ
+                                </div>
 
-                            <tr>
-                                <td>@col.car_number</td>
-                                <td>@col.time</td>
-                                <td>
-                                    <p id="data_@index"  value=""></p>
-                                </td>
-                               
-                            </tr>
+                            }
 
-                            index++;
                         }
-                    </tbody>
+                        }
+                        else
+                        {
+                            @if (Model.Count() != 0)
+                            {
+                                <table class="customers">
+                                    <thead>
+                                        <tr>
+                                            <th>หมายเลขรถ</th>
+                                            <th>เวลา</th>
+                                            <th>เลือก</th>
+                                        </tr>
+                                    </thead>
 
-                
-            </table>
+                                    <tbody>
+                                        @{int index = 0;}
+                                        @foreach (var col in Model)
+                                        {
 
-        }
-        else
-        {
-            <div class="container">
-                ระบบยังไม่พร้อมใช้งาน
-                กรุณารอเจ้าหน้าที่เปิดทำการ
-            </div>
+                                            <input type="hidden" id="id_@index" value="@col.id" />
+                                            <input type="hidden" id="time_@index" value="@col.time" />
 
-        }
 
-    }
+                                            <tr>
+                                                <td>@col.car_number</td>
+                                                <td>@col.time</td>
+                                                <td>
+                                                    <p id="data_@index" value=""></p>
+                                                </td>
+
+                                            </tr>
+
+                                            index++;
+                                        }
+                                    </tbody>
+
+
+                                </table>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="text1">
+                                                    ระบบยังไม่พร้อมใช้งาน
+                                                    กรุณารอเจ้าหน้าที่เปิดทำการ
+                                                </div>
+
+                                            }
+
+                                            }
 
 
 </div>
