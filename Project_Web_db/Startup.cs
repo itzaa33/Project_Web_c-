@@ -124,6 +124,7 @@ namespace Project_Web_db
             personnel.Seed().Wait();
 
 
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -152,6 +153,11 @@ namespace Project_Web_db
                 routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}")
                       .MapRoute("testCreare", "{controller=Home}/{action=Index}");
             });
+
+
+           
+
+  
 
         }
     }

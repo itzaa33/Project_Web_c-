@@ -176,6 +176,8 @@ namespace Project_Web_db.Controllers
 
                     _db.Users.Update(query_User);
 
+  
+
                     var ban = new Ban
                     {
                         email_user = query_User.email,
