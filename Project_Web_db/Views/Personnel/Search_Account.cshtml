@@ -115,7 +115,7 @@
                         </th>
 
                         <th>
-                            @if (col.state != "Admin" && col.email != Context.Session.GetString("Useremail"))
+                            @if (col.state != "Admin" && col.email != Context.Session.GetString("Useremail") && col.state == "User")
                             {
                                 @if (col.status_ban == 0)
                                 {
@@ -136,7 +136,7 @@
 
 
 
-                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax("col.email)" >แบน</button>
+                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax('@col.email')" >แบน</button>
 
                                 }
                                 else
@@ -146,7 +146,21 @@
                                 }
 
                             }
-               
+                            else if (col.state != "User" && col.state != "Admin" && col.email != Context.Session.GetString("Useremail"))
+                            {
+
+                                @if (col.status_ban == 0)
+                                {
+                                    <button class="btn btn-danger" id="banmodel" onclick="ban_ajax('@col.email')">แบน</button>
+
+                                }
+                                else
+                                {
+                                    <button class="btn btn-success" id="unbanmodel" name="unbanmodel" onclick="unban_ajax('@col.email')">ปลดแบน</button>
+
+                                }
+                            }
+
 
                         </th>
                     </tr>
@@ -171,7 +185,7 @@
         <form asp-controller="Personnel" asp-action="Change_ban" method="post">
 
             <input type="hidden" id="parse_value_ban" name="parse_value_ban" value="0" />
-            <input type="hidden" id="user_id" name="user_id"  />
+            <input type="hidden" id="user_email" name="user_email"  />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -214,7 +228,7 @@
         <form asp-controller="Personnel" asp-action="Change_ban" method="post">
 
             <input type="hidden" id="parse_value_ban" name="parse_value_ban" value="1" />
-            <input type="hidden" id="unban_user_id" name="user_id" />
+            <input type="hidden" id="unban_user_email" name="user_email" />
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
@@ -276,7 +290,7 @@
 
                     <div>
                         <label>Add Money</label>
-                        <input type="number" min="1" step="any" name="value_money"/>
+                        <input type="number" min="1" step="any" name="value_money" required value="0"/>
                     </div>
 
                 </div>
@@ -387,7 +401,7 @@
     {
 
 
-        alert(email);
+
 
         $.ajax({
             type: "get",
@@ -399,7 +413,7 @@
 
                 $('#namemodel').text(data.name);
 
-                $('#user_id').val(data.id);
+                $('#user_email').val(data.email);
 
                 $('#ban').modal();
             }
@@ -421,7 +435,7 @@
 
                 $('#unban_namemodel').text(data.name);
 
-                $('#unban_user_id').val(data.id);
+                $('#unban_user_email').val(data.email);
 
                 $('#unban').modal();
             }

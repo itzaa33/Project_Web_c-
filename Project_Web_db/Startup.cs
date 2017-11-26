@@ -45,8 +45,8 @@ namespace Project_Web_db
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("MySQLConnection")));
 
-            /*services.AddDbContext<ApplicationDbContext>(options =>
-           options.UseSqlServer(Configuration.GetConnectionString("MySQLConnection")));*/
+          // services.AddDbContext<ApplicationDbContext>(options =>
+          // options.UseSqlServer(Configuration.GetConnectionString("AzureConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
@@ -117,8 +117,8 @@ namespace Project_Web_db
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.                        //seeder
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env ,ILoggerFactory loggerFactory,EntitiesContextInitializer personnel )
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.                        //seeder EntitiesContextInitializer personnel
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env ,ILoggerFactory loggerFactory, EntitiesContextInitializer personnel)
         {
             //seedder
             personnel.Seed().Wait();

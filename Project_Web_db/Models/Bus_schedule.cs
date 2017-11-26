@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ namespace Project_Web_db.Models
     {
         public int id { get; set; }
 
+        [ForeignKey("FK_Bus_schedules")]
         public string email_personnel { get; set; }
 
         public int station_set { get; set; }

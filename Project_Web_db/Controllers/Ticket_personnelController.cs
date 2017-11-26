@@ -71,8 +71,13 @@ namespace Project_Web_db.Controllers
                if(Request.Cookies["Userstate"] == "Driver")
                 {
                     var email = _db.Personnels.Where(p => p.email == Request.Cookies["Useremail"]).FirstOrDefault();
-                    
-                    ViewBag.check_driver = querySchedule.Where(d => d.car_number == email.car_number);
+
+                    var newquerySchedule =  querySchedule.Where(d => d.car_number == email.car_number).Count();
+
+
+                    ViewBag.check_driver = newquerySchedule;
+
+                  
 
                     return View("Driver_Search_Busschedule", querySchedule);
                 }

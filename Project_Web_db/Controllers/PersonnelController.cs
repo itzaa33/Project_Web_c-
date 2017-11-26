@@ -106,15 +106,15 @@ namespace Project_Web_db.Controllers
 
         }
 
-        [Route("{id}")]
-        public ActionResult Redirect_Search_user(int id)
+        [Route("{email}")]
+        public ActionResult Redirect_Search_user(string email)
         {
 
             
-                var query_User = _db.Users.Where(u => u.id == id).ToList();
+                var query_User = _db.Users.Where(u => u.email == email).ToList();
 
                 var query_Personnel = (from p in _db.Personnels
-                                       where (p.id == id)
+                                       where (p.email == email)
                                        select new User
                                        {
                                            id = p.id,
@@ -160,13 +160,13 @@ namespace Project_Web_db.Controllers
         [HttpPost]
         public ActionResult Change_ban()
         {
-            int id_user = int.Parse(Request.Form["user_id"]);
+            string email = Request.Form["user_email"];
             int status_user = int.Parse(Request.Form["parse_value_ban"]);
 
 
-            var query_User = _db.Users.Where(u => u.status_ban == status_user && u.id == id_user).FirstOrDefault();
+            var query_User = _db.Users.Where(u => u.status_ban == status_user && u.email == email).FirstOrDefault();
 
-            var query_Personnel = _db.Personnels.Where(p => p.status_ban == status_user && p.id == id_user).FirstOrDefault();
+            var query_Personnel = _db.Personnels.Where(p => p.status_ban == status_user && p.email == email).FirstOrDefault();
 
             if (query_User != null)
             {
@@ -179,7 +179,7 @@ namespace Project_Web_db.Controllers
                     var ban = new Ban
                     {
                         email_user = query_User.email,
-                        email_personnel = HttpContext.Session.GetString("Useremail"),
+                        email_personnel = Request.Cookies["Useremail"],
                         command = 1,
                         explanation = Request.Form["explanation"],
                         date = DateTime.Now
@@ -197,7 +197,7 @@ namespace Project_Web_db.Controllers
                     var ban = new Ban
                     {
                         email_user = query_User.email,
-                        email_personnel = HttpContext.Session.GetString("Useremail"),
+                        email_personnel = Request.Cookies["Useremail"],
                         command = 0,
                         date = DateTime.Now
                     };
@@ -215,8 +215,8 @@ namespace Project_Web_db.Controllers
 
                     var ban = new Ban
                     {
-                        email_user = query_Personnel.email,
-                        email_personnel = HttpContext.Session.GetString("Useremail"),
+                        email_personnel_reaction = query_Personnel.email,
+                        email_personnel = Request.Cookies["Useremail"],
                         command = 1,
                         explanation = Request.Form["explanation"],
                         date = DateTime.Now
@@ -232,8 +232,8 @@ namespace Project_Web_db.Controllers
 
                     var ban = new Ban
                     {
-                        email_user = query_Personnel.email,
-                        email_personnel = HttpContext.Session.GetString("Useremail"),
+                        email_personnel_reaction = query_Personnel.email,
+                        email_personnel = Request.Cookies["Useremail"],
                         command = 0,
                         date = DateTime.Now
                     };
@@ -246,7 +246,7 @@ namespace Project_Web_db.Controllers
             _db.SaveChanges();
 
 
-            return Redirect($"/Personnel/Redirect_Search_user/{id_user}");
+            return Redirect($"/Personnel/Redirect_Search_user/{email}");
         }
 
         [HttpPost]
@@ -258,35 +258,42 @@ namespace Project_Web_db.Controllers
 
             var query_Personnel = _db.Personnels.Where(p => p.email == email_user).FirstOrDefault();
 
-            if(query_User != null)
+          
+
+            if (query_User != null)
             {
-                query_User.money = query_User.money + int.Parse(Request.Form["value_money"]);
-                _db.Users.Update(query_User);
+               
+                    query_User.money = query_User.money + int.Parse(Request.Form["value_money"]);
+                    _db.Users.Update(query_User);
 
-                var create_addmoney = new Personnel_Add_User
-                {
-                    email_user = email_user,
-                    email_personnel = HttpContext.Session.GetString("Useremail"),
-                    money = int.Parse(Request.Form["value_money"]),
-                    date = DateTime.Now
-                };
+                    var create_addmoney = new Personnel_Add_User
+                    {
+                        email_user = email_user,
+                        email_personnel = Request.Cookies["Useremail"],
+                        money = int.Parse(Request.Form["value_money"]),
+                        date = DateTime.Now
+                    };
 
-                _db.Personnel_Add_Users.Add(create_addmoney);
+                    _db.Personnel_Add_Users.Add(create_addmoney);
+        
+               
             }
             else
             {
-                query_Personnel.money = query_Personnel.money + int.Parse(Request.Form["value_money"]);
-                _db.Personnels.Update(query_Personnel);
+                
+                    query_Personnel.money = query_Personnel.money + int.Parse(Request.Form["value_money"]);
+                    _db.Personnels.Update(query_Personnel);
 
-                var create_addmoney = new Personnel_Add_User
-                {
-                    email_user = email_user,
-                    email_personnel = HttpContext.Session.GetString("Useremail"),
-                    money = int.Parse(Request.Form["value_money"]),
-                    date = DateTime.Now
-                };
+                    var create_addmoney = new Personnel_Add_User
+                    {
+                        email_user = email_user,
+                        email_personnel = Request.Cookies["Useremail"],
+                        money = int.Parse(Request.Form["value_money"]),
+                        date = DateTime.Now
+                    };
 
-                _db.Personnel_Add_Users.Add(create_addmoney);
+                    _db.Personnel_Add_Users.Add(create_addmoney);
+
             }
 
          
@@ -332,113 +339,170 @@ namespace Project_Web_db.Controllers
                 {
                     var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).FirstOrDefault();
 
-                    var query_history = (from b in _db.Bans
-                                         join u in _db.Users
-                                         on b.email_user equals u.email
-                                         join p in _db.Personnels
-                                         on b.email_personnel equals p.email
-                                         where (b.email_user == query_User.email)
-                                         orderby b.date descending
-                                         select new History_ban_ViewModel
-                                         {
-                                             email_user         = u.email,
-                                             name_user          = u.name,
-                                             phone_number_user  = u.phone_number,
-                                             state_user         = u.state,
-                                             status_user        = u.status_ban,
-                                             command            = b.command,
-                                             name_personnel     = p.name,
-                                             state_personnel    = p.state,
-                                             explanation        = b.explanation,
-                                             date               = b.date
-                                         }).ToList();
+                   
+                    if (query_User != null)
+                    {
+                        var query_history = (from b in _db.Bans
 
-                    return View("History_ban", query_history);
+                                             join u in _db.Users
+                                             on b.email_user equals u.email into new_u
 
+                                             join pr in _db.Personnels
+                                             on b.email_personnel_reaction equals pr.email into new_Pr
+
+                                             join p in _db.Personnels
+                                             on b.email_personnel equals p.email 
+
+                                             where (b.email_user == query_User.email)
+                                             orderby b.date descending
+
+                                             from user in new_u.DefaultIfEmpty()
+                                             from personnel in new_Pr.DefaultIfEmpty()
+                                             select new History_ban_ViewModel
+                                             {
+                                                 email_user = user.email,
+                                                 name_user = user.name,
+                                                 phone_number_user = user.phone_number,
+                                                 state_user = user.state,
+                                                 status_user = user.status_ban,
+                                                 command = b.command,
+                                                 name_personnel = p.name,
+                                                 state_personnel = p.state,
+                                                 explanation = b.explanation,
+                                                 date = b.date
+                                             }).ToList();
+                        return View("History_ban", query_history);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Search_History_banView","Personnel");
+                    }
+                  
                 }
                 else
                 {
-                    var query_User = _db.Users.Where(u => u.email == Request.Form["Search"]).FirstOrDefault();
 
-                    var query_history = (from b in _db.Bans
-                                         join u in _db.Users
-                                         on b.email_user equals u.email
-                                         join p in _db.Personnels
-                                         on b.email_personnel equals p.email
-                                         where (b.email_user == query_User.email)
-                                         orderby b.date descending
-                                         select new History_ban_ViewModel
-                                         {
-                                             email_user = u.email,
-                                             name_user = u.name,
-                                             phone_number_user = u.phone_number,
-                                             state_user = u.state,
-                                             status_user = u.status_ban,
-                                             command = b.command,
-                                             name_personnel = p.name,
-                                             state_personnel = p.state,
-                                             explanation = b.explanation,
-                                             date = b.date
-                                         }).ToList();
+                    var query_User = _db.Users.Where(u => u.name == Request.Form["Search"]).FirstOrDefault();
 
-                    return View("History_ban", query_history);
+
+                    if (query_User != null)
+                    {
+                        var query_history = (from b in _db.Bans
+
+                                             join u in _db.Users
+                                             on b.email_user equals u.email into new_u
+
+                                             join pr in _db.Personnels
+                                             on b.email_personnel_reaction equals pr.email into new_Pr
+
+                                             join p in _db.Personnels
+                                             on b.email_personnel equals p.email
+
+                                             where (b.email_user == query_User.email)
+                                             orderby b.date descending
+
+                                             from user in new_u.DefaultIfEmpty()
+                                             from personnel in new_Pr.DefaultIfEmpty()
+                                             select new History_ban_ViewModel
+                                             {
+                                                 email_user = user.email,
+                                                 name_user = user.name,
+                                                 phone_number_user = user.phone_number,
+                                                 state_user = user.state,
+                                                 status_user = user.status_ban,
+                                                 command = b.command,
+                                                 name_personnel = p.name,
+                                                 state_personnel = p.state,
+                                                 explanation = b.explanation,
+                                                 date = b.date
+                                             }).ToList();
+                        return View("History_ban", query_history);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Search_History_banView", "Personnel");
+                    }
+
                 }
+              
 
             }
             else if (Request.Form["Search_table"] == "personnel")
             {
                 if (Request.Form["Search_type"] == "email")
                 {
-                    var query_User = _db.Personnels.Where(p => p.name == Request.Form["Search"]).FirstOrDefault();
+                    var query_Personnel = _db.Personnels.Where(p => p.email == Request.Form["Search"]).FirstOrDefault();
 
-                    var query_history = (from b in _db.Bans
-                                         join personnel_ban in _db.Personnels
-                                         on b.email_user equals personnel_ban.email
-                                         join p in _db.Personnels
-                                         on b.email_personnel equals p.email
-                                         where (b.email_personnel == query_User.email)
-                                         orderby b.date descending
-                                         select new History_ban_ViewModel
-                                         {
-                                             email_user         = personnel_ban.email,
-                                             name_user          = personnel_ban.name,
-                                             phone_number_user  = personnel_ban.phone_number,
-                                             state_user         = personnel_ban.state,
-                                             status_user        = personnel_ban.status_ban,
-                                             command            = b.command,
-                                             name_personnel     = p.name,
-                                             state_personnel    = p.state,
-                                             explanation        = b.explanation,
-                                             date               = b.date
+                    if (query_Personnel != null)
+                    {
+                        var query_history = (from b in _db.Bans
 
-                                         }).ToList();
+                                             join u in _db.Users
+                                             on b.email_user equals u.email into new_u
 
-                    return View("History_ban", query_history);
+                                             join pr in _db.Personnels
+                                             on b.email_personnel_reaction equals pr.email into new_Pr
+
+                                             join p in _db.Personnels
+                                             on b.email_personnel equals p.email
+
+                                             where (b.email_personnel_reaction == query_Personnel.email)
+                                             orderby b.date descending
+
+                                             from user in new_u.DefaultIfEmpty()
+                                             from personnel in new_Pr.DefaultIfEmpty()
+                                             select new History_ban_ViewModel
+                                             {
+                                                 email_user = personnel.email,
+                                                 name_user = personnel.name,
+                                                 phone_number_user = personnel.phone_number,
+                                                 state_user = personnel.state,
+                                                 status_user = personnel.status_ban,
+                                                 command = b.command,
+                                                 name_personnel = p.name,
+                                                 state_personnel = p.state,
+                                                 explanation = b.explanation,
+                                                 date = b.date
+                                             }).ToList();
+                        return View("History_ban", query_history);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Search_History_banView", "Personnel");
+                    }
                 }
                 else
                 {
-                    var query_User = _db.Personnels.Where(u => u.name == Request.Form["Search"]).FirstOrDefault();
+                    var query_Personnel = _db.Personnels.Where(p => p.name == Request.Form["Search"]).FirstOrDefault();
 
                     var query_history = (from b in _db.Bans
-                                         join personnel_ban in _db.Personnels
-                                         on b.email_user equals personnel_ban.email
+
+                                         join u in _db.Users
+                                         on b.email_user equals u.email into new_u
+
+                                         join pr in _db.Personnels
+                                         on b.email_personnel_reaction equals pr.email into new_Pr
+
                                          join p in _db.Personnels
                                          on b.email_personnel equals p.email
-                                         where (b.email_user == query_User.email)
+
+                                         where (b.email_personnel_reaction == query_Personnel.email)
                                          orderby b.date descending
+
+                                         from user in new_u.DefaultIfEmpty()
+                                         from personnel in new_Pr.DefaultIfEmpty()
                                          select new History_ban_ViewModel
                                          {
-                                             email_user = personnel_ban.email,
-                                             name_user = personnel_ban.name,
-                                             phone_number_user = personnel_ban.phone_number,
-                                             state_user = personnel_ban.state,
-                                             status_user = personnel_ban.status_ban,
+                                             email_user = personnel.email,
+                                             name_user = personnel.name,
+                                             phone_number_user = personnel.phone_number,
+                                             state_user = personnel.state,
+                                             status_user = personnel.status_ban,
                                              command = b.command,
                                              name_personnel = p.name,
                                              state_personnel = p.state,
                                              explanation = b.explanation,
                                              date = b.date
-
                                          }).ToList();
 
                     return View("History_ban", query_history);

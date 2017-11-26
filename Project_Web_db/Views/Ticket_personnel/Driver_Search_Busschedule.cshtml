@@ -62,11 +62,13 @@
     }
 
 
-    @if (Model.Count() != 0 && ViewBag.check_driver != null)
+    @if (Model.Count() != 0 )
     {
 
 
-        <input type="hidden" id="state" value="@Context.Session.GetString("Userstate").ToString()" />
+        if(ViewBag.check_driver > 0)
+        {
+              <input type="hidden" id="state" value="@Context.Session.GetString("Userstate").ToString()" />
 
         <table class="customers">
             <thead>
@@ -113,13 +115,16 @@
 
 
         </table>
-                    }
 
-    @if (ViewBag.check_driver != null)
-    {
-        <p class="text1">ไม่มีรอบรถที่คุณต้องวิ่ง</p>
-    }
-    else
+        }
+        else
+        {
+            <p>ไม่มีรอบรถที่คุณต้องวิ่ง</p>
+
+        }
+      
+     }
+    else 
     {
         <div class="text1">
             ระบบยังไม่พร้อมใช้งาน

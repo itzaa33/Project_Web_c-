@@ -149,8 +149,9 @@ namespace Project_Web_db.Migrations
                     command = table.Column<int>(nullable: false),
                     date = table.Column<DateTime>(nullable: false),
                     explanation = table.Column<string>(nullable: true),
-                   email_personnel = table.Column<string>(maxLength: 191, nullable: false),
-                    email_user = table.Column<string>(maxLength: 191, nullable: false)
+                    email_personnel = table.Column<string>(maxLength: 191, nullable: false),
+                    email_personnel_reaction = table.Column<string>(maxLength: 191, nullable: true),
+                    email_user = table.Column<string>(maxLength: 191, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -167,6 +168,13 @@ namespace Project_Web_db.Migrations
                      name: "FK_Bans_User_emaill",
                      column: x => x.email_user,
                      principalTable: "Users",
+                     principalColumn: "email",
+                     onDelete: ReferentialAction.Cascade);
+
+                    table.ForeignKey(
+                     name: "FK_Personnel_Add_Users_Personnels_email_personnel_reaction",
+                     column: x => x.email_personnel_reaction,
+                     principalTable: "Personnels",
                      principalColumn: "email",
                      onDelete: ReferentialAction.Cascade);
 
@@ -237,6 +245,13 @@ namespace Project_Web_db.Migrations
                         principalTable: "Users",
                         principalColumn: "email",
                         onDelete: ReferentialAction.Cascade);
+
+                    table.ForeignKey(
+                     name: "FK_Reservations_Bus_schedules",
+                     column: x => x.id_bus_schedule,
+                     principalTable: "Bus_schedules",
+                     principalColumn: "id",
+                     onDelete: ReferentialAction.Cascade);
                 });
 
           
