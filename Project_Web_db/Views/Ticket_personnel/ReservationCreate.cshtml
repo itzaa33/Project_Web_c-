@@ -59,7 +59,7 @@
                 </div>
 
                 <div>
-                    <select id="seat" style="color:#000000; font-size: 16px;" name="seat" class="selectpicker" value="1">
+                    <select id="seat" style="color:#000000;font-size: 16px;width: 250px;margin-left: 40%;margin-bottom: 10px;" name="seat" class="form-control form-control-lg" value="1">
                         @for (int i = 1; i <= 15; i++)
                         {
                             <option value="@i">@i</option>
@@ -70,7 +70,7 @@
 
                 </div>
                 <div>
-                    <select id="destination" style="color:#000000;  font-size: 16px;" name="destination" class="selectpicker">
+                    <select id="destination" style="color:#000000;font-size: 16px;width: 250px;margin-left: 40%;margin-bottom: 10px;" name="destination" class="form-control form-control-lg">
                         @if (Model.station == 1)
                         {
 

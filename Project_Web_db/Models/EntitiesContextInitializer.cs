@@ -30,7 +30,7 @@ namespace Project_Web_db.Models
                      {
                          email = "test@hotmail.com",
                          password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                         name = "a",
+                         name = "Admin",
                          phone_number = "0123456789",
                          provider = "Normal",
                          state = "Admin",
@@ -44,7 +44,7 @@ namespace Project_Web_db.Models
                     {
                         email = "test1@hotmail.com",
                         password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                        name = "b",
+                        name = "Ticketing",
                         phone_number = "0123456789",
                         provider = "Normal",
                         state = "Ticketing",
@@ -58,7 +58,7 @@ namespace Project_Web_db.Models
                      {
                          email = "test2@hotmail.com",
                          password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                         name = "c",
+                         name = "Bus_1",
                          phone_number = "0123456789",
                          provider = "Normal",
                          state = "Driver",
@@ -73,7 +73,7 @@ namespace Project_Web_db.Models
                        {
                            email = "test3@hotmail.com",
                            password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                           name = "d",
+                           name = "Bus_2",
                            phone_number = "0123456789",
                            provider = "Normal",
                            state = "Driver",
@@ -88,7 +88,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test4@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "e",
+                            name = "Bus_3",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -103,7 +103,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test5@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "f",
+                            name = "Bus_4",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -118,7 +118,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test6@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "g",
+                            name = "Bus_5",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -133,7 +133,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test7@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "h",
+                            name = "Bus_6",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -148,7 +148,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test8@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "i",
+                            name = "Bus_7",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -163,7 +163,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test9@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "j",
+                            name = "Bus_8",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -178,7 +178,7 @@ namespace Project_Web_db.Models
                         {
                             email = "test10@hotmail.com",
                             password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                            name = "k",
+                            name = "Bus_9",
                             phone_number = "0123456789",
                             provider = "Normal",
                             state = "Driver",
@@ -193,7 +193,7 @@ namespace Project_Web_db.Models
                          {
                              email = "test11@hotmail.com",
                              password = BCrypt.Net.BCrypt.HashPassword("123456789"),
-                             name = "k",
+                             name = "Bus_10",
                              phone_number = "0123456789",
                              provider = "Normal",
                              state = "Driver",
